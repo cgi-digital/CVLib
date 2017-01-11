@@ -1,0 +1,1 @@
+web: java $JAVA_OPTS -jar target/authentication-quickstart-1.0.0-SNAPSHOT.jar server config/properties.yml

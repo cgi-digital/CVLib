@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="1" author="dw.quickstarts">
+        <!-- Users -->
+        <createTable tableName="users">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="firstname" type="varchar(50)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="lastname" type="varchar(50)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="title" type="varchar(50)">
+                <constraints nullable="true" unique="false"/>
+            </column>
+            <column name="summary" type="varchar(1000)">
+                <constraints nullable="true" unique="false"/>
+            </column>
+            <column name="salt" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="admin" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="disabled" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <!-- Qualifications -->
+        <createTable tableName="qualifications">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="userid" type="bigint">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="qualification" type="varchar(100)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="qualifications" baseColumnNames="userid"
+                                 constraintName="fk_qualification"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <!-- Projects -->
+        <createTable tableName="projects">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="userid" type="bigint">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="employer" type="varchar(50)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="project" type="varchar(50)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="role" type="varchar(50)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="summary" type="varchar(500)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="projects" baseColumnNames="userid"
+                                 constraintName="fk_project"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <insert tableName="users">
+            <column name="username" value="admin"/>
+            <column name="firstname" value="Admin"/>
+            <column name="lastname" value="Admin"/>
+            <column name="title" value="Admin"/>
+            <column name="summary" value="Admin's summary"/>
+            <column name="salt" value="dM87uFPEsdFQ"/>
+            <!-- default password is "password" -->
+            <column name="password" value="1c9d2f43c1e2a0b2b8e31174b7c0494fef3655b56a9f5cd33d5294b6eded283d"/>
+            <column name="admin" value="true"/>
+            <column name="disabled" value="false"/>
+        </insert>
+        <insert tableName="users">
+            <column name="username" value="guest"/>
+            <column name="firstname" value="Guest"/>
+            <column name="lastname" value="Guest"/>
+            <column name="title" value="Guest"/>
+            <column name="summary" value="Guest's summary"/>
+            <column name="salt" value="dM87uFPEsdFQ"/>
+            <!-- default password is "password" -->
+            <column name="password" value="1c9d2f43c1e2a0b2b8e31174b7c0494fef3655b56a9f5cd33d5294b6eded283d"/>
+            <column name="admin" value="false"/>
+            <column name="disabled" value="false"/>
+        </insert>
+        <insert tableName="qualifications">
+            <column name="userid" value="2"/>
+            <column name="qualification" value="M.Sc Computer Science, University of Southampton"/>
+        </insert>
+        <insert tableName="projects">
+            <column name="userid" value="2"/>
+            <column name="employer" value="Employer"/>
+            <column name="project" value="Project"/>
+            <column name="role" value="Role"/>
+            <column name="summary" value="Project Summary"/>
+        </insert>
+
+    </changeSet>
+</databaseChangeLog>
