@@ -1,8 +1,4 @@
-# Dropwizard authentication quickstart
 
-![BuildStatus](https://travis-ci.org/mariosk89/DropwizardAuthenticationQuickstart.svg?branch=master)
-
-The project allows user to register and login a simple web-app. It also provides an administrator console that allows admins to promote other users to admins and to enable or disable their accounts. The project can provide a simple authentication mechanism on top of which other, richer projects, can be built.
 To run the project you'll need Maven 3 and JDK8.
 
 ## Building
