@@ -14,6 +14,8 @@ public class Profile {
     private String title;
     private String summary;
     private boolean admin;
+    private boolean disabled;
+    private List<Skill> skills;
     private List<Qualification> qualifications;
     private List<Project> projects;
 
@@ -28,11 +30,12 @@ public class Profile {
         profile.lastname = user.getLastname();
         profile.title = user.getTitle();
         profile.admin = user.isAdmin();
+        profile.disabled = user.isDisabled();
 
         return profile;
     }
 
-    public static Profile getFullProfile(User user, List<Qualification> qualifications, List<Project> projects)
+    public static Profile getFullProfile(User user, List<Skill> skills, List<Qualification> qualifications, List<Project> projects)
     {
         Profile profile = new Profile();
         profile.id = user.getId();
@@ -42,6 +45,8 @@ public class Profile {
         profile.title = user.getTitle();
         profile.summary = user.getSummary();
         profile.admin = user.isAdmin();
+        profile.disabled = user.isDisabled();
+        profile.skills = skills;
         profile.qualifications = qualifications;
         profile.projects = projects;
 
@@ -84,6 +89,14 @@ public class Profile {
 
     public boolean isAdmin() {
         return admin;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public List<Skill> getSkills() {
+        return skills;
     }
 
     public List<Qualification> getQualifications() {

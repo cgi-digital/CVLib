@@ -6,6 +6,7 @@ public class User {
 
     private String firstname;
     private String lastname;
+    private String address;
     private String title;
     private String summary;
 
@@ -14,24 +15,16 @@ public class User {
     private final boolean admin;
     private final boolean disabled;
 
-    public User(long id, String username, String firstname, String lastname, String title, String summary, String salt, String password, boolean admin, boolean disabled) {
+    public User(long id, String username, String firstname, String lastname, String address, String title, String summary, String salt, String password, boolean admin, boolean disabled) {
         this.id = id;
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.address = address;
         this.title = title;
         this.summary = summary;
         this.salt = salt;
         this.password = password;
-        this.admin = admin;
-        this.disabled = disabled;
-    }
-
-    public User(long id, String username,boolean admin, boolean disabled) {
-        this.id = id;
-        this.username = username;
-        this.salt = null;
-        this.password = null;
         this.admin = admin;
         this.disabled = disabled;
     }
@@ -50,6 +43,10 @@ public class User {
 
     public String getLastname() {
         return lastname;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public String getTitle() {

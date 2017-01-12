@@ -21,6 +21,9 @@
             <column name="lastname" type="varchar(50)">
                 <constraints nullable="false" unique="false"/>
             </column>
+            <column name="address" type="varchar(50)">
+                <constraints nullable="true" unique="false"/>
+            </column>
             <column name="title" type="varchar(50)">
                 <constraints nullable="true" unique="false"/>
             </column>
@@ -40,13 +43,36 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <!-- Skills -->
+        <createTable tableName="skills">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="userid" type="bigint">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="skill" type="varchar(100)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="level" type="bigint">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="skills" baseColumnNames="userid"
+                                 constraintName="fk_skill"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
         <!-- Qualifications -->
         <createTable tableName="qualifications">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="userid" type="bigint">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="false" unique="false"/>
             </column>
             <column name="qualification" type="varchar(100)">
                 <constraints nullable="false" unique="false"/>
@@ -65,7 +91,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="userid" type="bigint">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="false" unique="false"/>
             </column>
             <column name="employer" type="varchar(50)">
                 <constraints nullable="false" unique="false"/>
@@ -110,6 +136,11 @@
             <column name="password" value="1c9d2f43c1e2a0b2b8e31174b7c0494fef3655b56a9f5cd33d5294b6eded283d"/>
             <column name="admin" value="false"/>
             <column name="disabled" value="false"/>
+        </insert>
+        <insert tableName="skills">
+            <column name="userid" value="2"/>
+            <column name="skill" value="Java"/>
+            <column name="level" value="5"/>
         </insert>
         <insert tableName="qualifications">
             <column name="userid" value="2"/>

@@ -18,10 +18,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -52,6 +49,7 @@ public class SecurityResource {
     @POST
     @Path("/login")
     @Timed
+    @Produces(MediaType.APPLICATION_JSON)
     public Response handleLogin(@Session HttpSession session,
                                 @Context HttpServletRequest req,
                                 @Context UriInfo uriInfo,
@@ -110,22 +108,21 @@ public class SecurityResource {
         session.setAttribute("username", username);
         session.setAttribute("authenticated", false);
 
-        return Response.seeOther(
-                uriInfo.getBaseUriBuilder()
-                        .path(SecurityResource.class)
-                        .path("/login")
-                        .queryParam("message", "LOGIN_ERR")
-                        .build()
-        ).build();
+        return Response.status(Response.Status.BAD_REQUEST).entity(messages.get("LOGIN_ERR")).build();
     }
 
     @POST
     @Path("/logout")
     @Timed
+    @Produces(MediaType.APPLICATION_JSON)
     public Response handleLogout(@Session HttpSession session,
                                  @Context UriInfo uriInfo) {
         session.setAttribute("authenticated", false);
-        return Response.seeOther(uriInfo.getBaseUriBuilder().path(SecurityResource.class).path("/login").build()).build();
+
+        return Response.status(Response.Status.OK).entity(uriInfo.getBaseUriBuilder()
+                .path(SecurityResource.class)
+                .path("/login").build())
+                .build();
     }
 
     @POST

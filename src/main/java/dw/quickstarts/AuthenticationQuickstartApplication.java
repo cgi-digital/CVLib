@@ -2,9 +2,11 @@ package dw.quickstarts;
 
 import dw.quickstarts.dao.ProjectDAO;
 import dw.quickstarts.dao.QualificationDAO;
+import dw.quickstarts.dao.SkillDAO;
 import dw.quickstarts.dao.UserDAO;
 import dw.quickstarts.dao.factory.ProjectDAOFactory;
 import dw.quickstarts.dao.factory.QualificationDAOFactory;
+import dw.quickstarts.dao.factory.SkillDAOFactory;
 import dw.quickstarts.resources.AdminConsoleResource;
 import dw.quickstarts.tasks.GetHashedPasswordCommand;
 import io.dropwizard.Application;
@@ -63,6 +65,9 @@ public class AuthenticationQuickstartApplication extends Application<Authenticat
         final UserDAO userDAO = jdbi.onDemand(UserDAO.class);
         final UserDAOFactory userDAOFactory = new UserDAOFactory(userDAO);
 
+        final SkillDAO skillDAO = jdbi.onDemand(SkillDAO.class);
+        final SkillDAOFactory skillDAOFactory = new SkillDAOFactory(skillDAO);
+
         final QualificationDAO qualificationDAO = jdbi.onDemand(QualificationDAO.class);
         final QualificationDAOFactory qualificationDAOFactory = new QualificationDAOFactory(qualificationDAO);
 
@@ -73,6 +78,8 @@ public class AuthenticationQuickstartApplication extends Application<Authenticat
             @Override
             protected void configure() {
                 bindFactory(userDAOFactory).to(UserDAO.class)
+                        .proxy(true).proxyForSameScope(false).in(RequestScoped.class);
+                bindFactory(skillDAOFactory).to(SkillDAO.class)
                         .proxy(true).proxyForSameScope(false).in(RequestScoped.class);
                 bindFactory(qualificationDAOFactory).to(QualificationDAO.class)
                         .proxy(true).proxyForSameScope(false).in(RequestScoped.class);
@@ -91,7 +98,7 @@ public class AuthenticationQuickstartApplication extends Application<Authenticat
         environment.jersey().register(ForbiddenExceptionMapper.class);
 
         // Resources
-        environment.jersey().register(new UserResource(userDAO,qualificationDAO,projectDAO));
+        environment.jersey().register(new UserResource(userDAO,skillDAO,qualificationDAO,projectDAO));
         environment.jersey().register(new SecurityResource(userDAO));
         environment.jersey().register(new AdminConsoleResource(userDAO,qualificationDAO,projectDAO));
 

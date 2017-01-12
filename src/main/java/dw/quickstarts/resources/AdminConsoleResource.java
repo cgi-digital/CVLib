@@ -50,6 +50,7 @@ public class AdminConsoleResource {
     @Path("/{userid}/admin")
     @Timed
     @LoginRequired
+    @Produces(MediaType.APPLICATION_JSON)
     public Response promoteUserToAdmin(@Context HttpServletRequest request, @Session HttpSession session, @Context UriInfo uriInfo, @PathParam("userid") long userid) {
 
         URI logoutLocation = uriInfo
@@ -69,7 +70,7 @@ public class AdminConsoleResource {
                 if(!requestedUser.isDisabled())
                 {
                     userDAO.promoteUserToAdministrator(userid);
-                    return Response.status(Response.Status.OK).build();
+                    return Response.status(Response.Status.OK).entity(userDAO.findAll()).build();
                 }
                 else
                 {
@@ -89,6 +90,7 @@ public class AdminConsoleResource {
     @Path("/{userid}/disable/{enablement}")
     @Timed
     @LoginRequired
+    @Produces(MediaType.APPLICATION_JSON)
     public Response updateUserEnablement(@Context HttpServletRequest request, @Session HttpSession session, @Context UriInfo uriInfo, @PathParam("userid") long userid, @PathParam("enablement") boolean enablement) {
 
         URI logoutLocation = uriInfo
@@ -106,7 +108,7 @@ public class AdminConsoleResource {
             if(requestedUser != null)
             {
                 userDAO.updateUserEnablement(userid,enablement);
-                return Response.status(Response.Status.OK).build();
+                return Response.status(Response.Status.OK).entity(userDAO.findAll()).build();
             }
             else
             {

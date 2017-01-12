@@ -30,10 +30,11 @@ public interface UserDAO {
                       @Bind("password") String password,
                       @Bind("admin") boolean admin);
 
-    @SqlUpdate("update users set firstname = :firstname, lastname = :lastname, title = :title, summary = :summary where username = :username")
+    @SqlUpdate("update users set firstname = :firstname, lastname = :lastname, address = :address, title = :title, summary = :summary where username = :username")
     void updateUserDetails(@Bind("username") String username,
                       @Bind("firstname") String firstname,
                       @Bind("lastname") String lastname,
+                      @Bind("address") String address,
                       @Bind("title") String title,
                       @Bind("summary") String summary);
 
@@ -43,10 +44,10 @@ public interface UserDAO {
                                @Bind("password") String password);
 
 
-    @SqlUpdate("update users set user.admin = true where user.id = :id")
+    @SqlUpdate("update users set users.admin = true where users.id = :id")
     void promoteUserToAdministrator(@Bind("id") Long id);
 
-    @SqlUpdate("update users set user.disabled = :disabled where user.id = :id")
+    @SqlUpdate("update users set users.disabled = :disabled where users.id = :id")
     void updateUserEnablement(@Bind("id") Long id, @Bind("disabled") boolean disabled);
 
     void close();

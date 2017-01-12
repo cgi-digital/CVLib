@@ -19,6 +19,8 @@ public interface ProjectDAO {
     @SqlQuery("select * from projects where userid = :userid")
     List<Project> findUserProjects(@Bind("userid") long userid);
 
+    @SqlQuery("select * from projects where id = :id")
+    List<Project> findUserProjectById(@Bind("id") long id);
 
     @SqlUpdate("insert into projects (userid, employer, project, role, summary) values (:userid , :employer, :project, :role, :summary)")
     void addProject(@Bind("userid") Long userid,
@@ -27,14 +29,16 @@ public interface ProjectDAO {
                     @Bind("role") String role,
                     @Bind("summary") String summary);
 
-    @SqlUpdate("update projects set qualification = :qualification, employer = :employer, project = :project, role = :role, summary = :summary where id = :id")
+    @SqlUpdate("update projects set employer = :employer, project = :project, role = :role, summary = :summary where id = :id AND userid = :userid")
     void updateProject(@Bind("id") Long id,
+                       @Bind("userid") Long userid,
                        @Bind("employer") String employer,
                        @Bind("project") String project,
                        @Bind("role") String role,
                        @Bind("summary") String summary);
 
-    @SqlUpdate("delete from projects where id = :id")
-    void deleteProject(@Bind("id") Long id);
+    @SqlUpdate("delete from projects where id = :id AND userid = :userid")
+    void deleteProject(@Bind("id") Long id,
+                       @Bind("userid") Long userid);
 
 }

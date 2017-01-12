@@ -1,13 +1,11 @@
 package dw.quickstarts.resources;
 
 import com.codahale.metrics.annotation.Timed;
-import dw.quickstarts.Profile;
-import dw.quickstarts.Project;
-import dw.quickstarts.Qualification;
-import dw.quickstarts.User;
+import dw.quickstarts.*;
 import dw.quickstarts.annotations.LoginRequired;
 import dw.quickstarts.dao.ProjectDAO;
 import dw.quickstarts.dao.QualificationDAO;
+import dw.quickstarts.dao.SkillDAO;
 import dw.quickstarts.dao.UserDAO;
 import dw.quickstarts.utilities.URITools;
 import io.dropwizard.jersey.sessions.Session;
@@ -31,11 +29,13 @@ import java.util.List;
 public class UserResource {
     private final Logger LOGGER = LoggerFactory.getLogger(UserResource.class);
     private final UserDAO userDAO;
+    private final SkillDAO skillDAO;
     private final QualificationDAO qualificationDAO;
     private final ProjectDAO projectDAO;
 
-    public UserResource(UserDAO userDAO, QualificationDAO qualificationDAO, ProjectDAO projectDAO) {
+    public UserResource(UserDAO userDAO, SkillDAO skillDAO, QualificationDAO qualificationDAO, ProjectDAO projectDAO) {
         this.userDAO = userDAO;
+        this.skillDAO = skillDAO;
         this.qualificationDAO = qualificationDAO;
         this.projectDAO = projectDAO;
     }
@@ -52,10 +52,11 @@ public class UserResource {
         Long id = (Long) session.getAttribute("userid");
         User user = userDAO.findById(id);
 
+        List<Skill> skills = skillDAO.findUserSkills(id);
         List<Qualification> qualifications = qualificationDAO.findUserQualifications(id);
         List<Project> projects = projectDAO.findUserProjects(id);
 
-        return Profile.getFullProfile(user,qualifications,projects);
+        return Profile.getFullProfile(user,skills,qualifications,projects);
     }
 
     @POST
@@ -65,6 +66,7 @@ public class UserResource {
     public Response updateUserDetails(@Session HttpSession session, @Context UriInfo uriInfo,
                                            @FormParam("FirstName") String firstname,
                                            @FormParam("LastName") String lastname,
+                                           @FormParam("Address") String address,
                                            @FormParam("Title") String title,
                                            @FormParam("Summary") String summary) throws Exception {
 
@@ -74,10 +76,92 @@ public class UserResource {
         Long id = (Long) session.getAttribute("userid");
         User user = userDAO.findById(id);
 
-        userDAO.updateUserDetails(user.getUsername(),firstname,lastname,title,summary);
+        userDAO.updateUserDetails(user.getUsername(),firstname,lastname,address,title,summary);
 
         return Response.status(Response.Status.OK).build();
     }
+
+
+
+
+    @GET
+    @Path("/skills")
+    @Timed
+    @LoginRequired
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Skill> getSkills(@Session HttpSession session, @Context UriInfo uriInfo) throws Exception {
+
+        URI logoutLocation = URITools.buildURI(uriInfo, SecurityResource.class, "/logout");
+        URI adminConsoleLocation = URITools.buildURI(uriInfo, AdminConsoleResource.class, "");
+
+        Long id = (Long) session.getAttribute("userid");
+        User user = userDAO.findById(id);
+
+        List<Skill> skills = skillDAO.findUserSkills(user.getId());
+
+        return skills;
+    }
+
+    @POST
+    @Path("/skills")
+    @Timed
+    @LoginRequired
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addSkill(@Session HttpSession session, @Context UriInfo uriInfo,
+                                     @FormParam("skill") String skill, @FormParam("level") int level) throws Exception {
+
+        URI logoutLocation = URITools.buildURI(uriInfo, SecurityResource.class, "/logout");
+        URI adminConsoleLocation = URITools.buildURI(uriInfo, AdminConsoleResource.class, "");
+
+        Long id = (Long) session.getAttribute("userid");
+        User user = userDAO.findById(id);
+
+        skillDAO.addSkill(user.getId(),skill,level);
+
+        return Response.status(Response.Status.OK).entity(skillDAO.findUserSkills(id)).build();
+    }
+
+    @PUT
+    @Path("/skills/{id}")
+    @Timed
+    @LoginRequired
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateSkill(@Session HttpSession session, @Context UriInfo uriInfo,
+                                        @FormParam("skill") String skill, @FormParam("level") int level,
+                                        @PathParam("id") long skillId) throws Exception {
+
+        URI logoutLocation = URITools.buildURI(uriInfo, SecurityResource.class, "/logout");
+        URI adminConsoleLocation = URITools.buildURI(uriInfo, AdminConsoleResource.class, "");
+
+        Long id = (Long) session.getAttribute("userid");
+        User user = userDAO.findById(id);
+
+
+        skillDAO.updateSkill(skillId,user.getId(),skill,level);
+
+        return Response.status(Response.Status.OK).entity(skillDAO.findUserSkills(id)).build();
+
+    }
+
+    @DELETE
+    @Path("/skills/{id}")
+    @Timed
+    @LoginRequired
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteSkill(@Session HttpSession session, @Context UriInfo uriInfo,@PathParam("id") long skillId) throws Exception {
+
+        URI logoutLocation = URITools.buildURI(uriInfo, SecurityResource.class, "/logout");
+        URI adminConsoleLocation = URITools.buildURI(uriInfo, AdminConsoleResource.class, "");
+
+        Long id = (Long) session.getAttribute("userid");
+        User user = userDAO.findById(id);
+
+        //TODO DAO
+        skillDAO.deleteSkill(skillId,user.getId());
+
+        return Response.status(Response.Status.OK).entity(skillDAO.findUserSkills(id)).build();
+    }
+
 
     @GET
     @Path("/qualifications")
@@ -131,14 +215,14 @@ public class UserResource {
         Long id = (Long) session.getAttribute("userid");
         User user = userDAO.findById(id);
 
-        qualificationDAO.updateQualification(qualificationId,qualification);
+        qualificationDAO.updateQualification(qualificationId,user.getId(),qualification);
 
         return Response.status(Response.Status.OK).entity(qualificationDAO.findUserQualifications(id)).build();
 
     }
 
-    @PUT
-    @Path("/qualifications/{id}/delete")
+    @DELETE
+    @Path("/qualifications/{id}")
     @Timed
     @LoginRequired
     @Produces(MediaType.APPLICATION_JSON)
@@ -151,12 +235,10 @@ public class UserResource {
         User user = userDAO.findById(id);
 
         //TODO DAO
-        qualificationDAO.deleteQualification(qualificationId);
+        qualificationDAO.deleteQualification(qualificationId,user.getId());
 
         return Response.status(Response.Status.OK).entity(qualificationDAO.findUserQualifications(id)).build();
     }
-
-
 
     @GET
     @Path("/projects")
@@ -217,12 +299,12 @@ public class UserResource {
         Long id = (Long) session.getAttribute("userid");
         User user = userDAO.findById(id);
 
-        projectDAO.updateProject(projectId,employer,project,role,summary);
+        projectDAO.updateProject(projectId, user.getId(),employer,project,role,summary);
         return Response.status(Response.Status.OK).entity(projectDAO.findUserProjects(id)).build();
     }
 
-    @PUT
-    @Path("/projects/{id}/delete")
+    @DELETE
+    @Path("/projects/{id}")
     @Timed
     @LoginRequired
     @Produces(MediaType.APPLICATION_JSON)
@@ -234,7 +316,7 @@ public class UserResource {
         Long id = (Long) session.getAttribute("userid");
         User user = userDAO.findById(id);
 
-        projectDAO.deleteProject(projectId);
+        projectDAO.deleteProject(projectId, user.getId());
         return Response.status(Response.Status.OK).entity(projectDAO.findUserProjects(id)).build();
     }
 
@@ -278,10 +360,11 @@ public class UserResource {
             User requestedUser = userDAO.findById(userid);
             if(requestedUser != null)
             {
+                List<Skill> skills = skillDAO.findUserSkills(userid);
                 List<Qualification> qualifications = qualificationDAO.findUserQualifications(userid);
                 List<Project> projects = projectDAO.findUserProjects(userid);
 
-                return Response.status(Response.Status.OK).entity(Profile.getFullProfile(requestedUser,qualifications,projects)).build();
+                return Response.status(Response.Status.OK).entity(Profile.getFullProfile(requestedUser,skills,qualifications,projects)).build();
             }
             else
             {
