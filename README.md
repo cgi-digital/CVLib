@@ -1,3 +1,4 @@
+![BuildStatus](https://travis-ci.org/cgi-digital/CVLib.svg?branch=master)
 
 To run the project you'll need Maven 3 and JDK8.
 
