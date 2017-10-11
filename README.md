@@ -40,5 +40,5 @@ $ java -jar target/authentication-quickstart-1.0.0-SNAPSHOT.jar db drop-all --co
 
 Run the application:
 ```
-$ java -jar target/authentication-quickstart-1.0.0-SNAPSHOT.jar server config/local.yml
+$ java -jar target/authentication-quickstart-1.0.0-SNAPSHOT.jar server config/properties.yml
 ```
