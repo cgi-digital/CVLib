@@ -22,10 +22,11 @@ public interface UserDAO {
     @SqlQuery("select * from users")
     List<User> findAll();
 
-    @SqlUpdate("insert into users (username,firstname,lastname,salt,password,admin,disabled) values (:username, :firstname, :lastname, :salt,:password,:admin, false)")
+    @SqlUpdate("insert into users (username,firstname,lastname,address,salt,password,admin,disabled) values (:username, :firstname, :lastname, :address, :salt,:password,:admin, false)")
     void registerUser(@Bind("username") String username,
                       @Bind("firstname") String firstname,
                       @Bind("lastname") String lastname,
+                      @Bind("address") String address,
                       @Bind("salt") String salt,
                       @Bind("password") String password,
                       @Bind("admin") boolean admin);
