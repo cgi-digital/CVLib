@@ -140,7 +140,7 @@
         <insert tableName="skills">
             <column name="userid" value="2"/>
             <column name="skill" value="Java"/>
-            <column name="level" value="5"/>
+            <column name="level" value="3"/>
         </insert>
         <insert tableName="qualifications">
             <column name="userid" value="2"/>
@@ -153,6 +153,145 @@
             <column name="role" value="Role"/>
             <column name="summary" value="Project Summary"/>
         </insert>
+
+        <!-- Skills and Competencies-->
+
+
+
+
+        <!--<createTable tableName="skills">-->
+            <!--<column name="id" type="bigint" autoIncrement="true">-->
+                <!--<constraints primaryKey="true" nullable="false"/>-->
+            <!--</column>-->
+            <!--<column name="lang" type="varchar(3)">-->
+                <!--<constraints nullable="false" unique="false"/>-->
+            <!--</column>-->
+            <!--<column name="version" type="int">-->
+                <!--<constraints nullable="false" unique="false"/>-->
+            <!--</column>-->
+            <!--<column name="category" type="varchar(50)">-->
+                <!--<constraints nullable="false" unique="false"/>-->
+            <!--</column>-->
+            <!--<column name="subcategory" type="varchar(50)">-->
+                <!--<constraints nullable="false" unique="false"/>-->
+            <!--</column>-->
+            <!--<column name="skill" type="varchar(50)">-->
+                <!--<constraints nullable="false" unique="false"/>-->
+            <!--</column>-->
+            <!--<column name="description" type="varchar(1000)">-->
+                <!--<constraints nullable="false" unique="false"/>-->
+            <!--</column>-->
+            <!--<column name="code" type="varchar(4)">-->
+                <!--<constraints nullable="false" unique="false"/>-->
+            <!--</column>-->
+            <!--<column name="level" type="int">-->
+                <!--<constraints nullable="false" unique="false"/>-->
+            <!--</column>-->
+            <!--<column name="description22" type="varchar(1000)">-->
+                <!--<constraints nullable="false" unique="false"/>-->
+            <!--</column>-->
+
+        <!--</createTable>-->
+<!--&lt;!&ndash;        <addForeignKeyConstraint baseTableName="sfiaskills" baseColumnNames="id"-->
+                                 <!--constraintName="fk_project"-->
+                                 <!--onDelete="CASCADE"-->
+                                 <!--onUpdate="NO ACTION"-->
+                                 <!--referencedTableName="users"-->
+                                 <!--referencedColumnNames="id"-->
+        <!--/>&ndash;&gt;-->
+
+        <!--<insert tableName="skills">-->
+            <!--<column name="id" value= "1"/>-->
+            <!--<column name="lang" value="test"/>-->
+            <!--<column name="version" value="test"/>-->
+            <!--<column name="category" value="test"/>-->
+            <!--<column name="subcategory" value="test"/>-->
+            <!--<column name="skill" value="test"/>-->
+            <!--<column name="description" value="test"/>-->
+            <!--<column name="code" value="test"/>-->
+            <!--<column name="level" value="2"/>-->
+            <!--<column name="description22" value="test"/>-->
+           <!--</insert>-->
+
+       <!-- <insert tableName="users">
+            <column name="username" value="admin"/>
+            <column name="firstname" value="Admin"/>
+            <column name="lastname" value="Admin"/>
+            <column name="title" value="Admin"/>
+            <column name="summary" value="Admin's summary"/>
+            <column name="salt" value="dM87uFPEsdFQ"/>
+            &lt;!&ndash; default password is "password" &ndash;&gt;
+            <column name="password" value="1c9d2f43c1e2a0b2b8e31174b7c0494fef3655b56a9f5cd33d5294b6eded283d"/>
+            <column name="admin" value="true"/>
+            <column name="disabled" value="false"/>
+        </insert>-->
+
+
+
+    </changeSet>
+
+    <changeSet id="2" author="dw.quickstarts">
+
+        <createTable tableName="skillsTest">
+            <column name="id" type="bigint" autoIncrement="true">
+            <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="lang" type="varchar(3)">
+            <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="version" type="int">
+            <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="category" type="varchar(50)">
+            <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="subcategory" type="varchar(50)">
+            <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="skill" type="varchar(50)">
+            <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="description" type="varchar(2000)">
+            <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="code" type="varchar(4)">
+            <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="level" type="int">
+            <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="description22" type="varchar(2000)">
+            <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+
+        <loadData tableName="skillsTest" file="sfiaskills.6.3.en.1.csv">
+            <column header="uid" type="skip" />
+            <column header="master" type="skip" />
+            <column header="title" type="skip" />
+            <column header="loc" type="skip" />
+            <column header="loc2" type="skip" />
+            <column header="uid3" type="skip" />
+            <column header="master4" type="skip" />
+            <column header="loc16" type="skip" />
+            <column header="loc17" type="skip" />
+            <column header="uid18" type="skip" />
+            <column header="master19" type="skip" />
+            <column header="loc21" type="skip" />
+            <column header="loc23" type="skip" />
+
+            <column header="loc6" type="skip" />
+            <column header="loc7" type="skip" />
+            <column header="uid8" type="skip" />
+            <column header="master9" type="skip" />
+            <column header="loc11" type="skip" />
+
+            <column header="loc12" type="skip" />
+            <column header="uid13" type="skip" />
+            <column header="master14" type="skip" />
+
+
+        </loadData>
 
     </changeSet>
 </databaseChangeLog>

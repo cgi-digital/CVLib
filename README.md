@@ -28,13 +28,13 @@ $ java -jar target/authentication-quickstart-1.0.0-SNAPSHOT.jar db migrate confi
 If this is the first time running, set the admin password on the database
 
 ```
-$ java -jar target/authentication-quickstart-1.0.0-SNAPSHOT.jar setuserpassword -u admin -p new_password_here config/local.yml
+$ java -jar target/authentication-quickstart-1.0.0-SNAPSHOT.jar setuserpassword -u admin -p new_password_here config/properties.yml
 ```
 
 Note:
 In order to drop any previous versions of the database, first delete the files inside the 'database' directory of your project and then , run the followibg script before re-running the migration
 ```
-$ java -jar target/authentication-quickstart-1.0.0-SNAPSHOT.jar db drop-all --confirm-delete-everything config/local.yml
+$ java -jar target/authentication-quickstart-1.0.0-SNAPSHOT.jar db drop-all --confirm-delete-everything config/properties.yml
 ```
 
 
