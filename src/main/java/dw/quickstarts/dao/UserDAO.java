@@ -22,20 +22,20 @@ public interface UserDAO {
     @SqlQuery("select * from users")
     List<User> findAll();
 
-    @SqlUpdate("insert into users (username,firstname,lastname,address,salt,password,admin,disabled) values (:username, :firstname, :lastname, :address, :salt,:password,:admin, false)")
+    @SqlUpdate("insert into users (username,firstName,lastName,emailAddress,salt,password,admin,disabled) values (:username, :firstName, :lastName, :emailAddress, :salt,:password,:admin, false)")
     void registerUser(@Bind("username") String username,
-                      @Bind("firstname") String firstname,
-                      @Bind("lastname") String lastname,
-                      @Bind("address") String address,
+                      @Bind("firstName") String firstName, 
+                      @Bind("lastName") String lastName,
+                      @Bind("emailAddress") String emailAddress,
                       @Bind("salt") String salt,
                       @Bind("password") String password,
                       @Bind("admin") boolean admin);
 
-    @SqlUpdate("update users set firstname = :firstname, lastname = :lastname, address = :address, title = :title, summary = :summary where username = :username")
+    @SqlUpdate("update users set firstName = :firstName, lastName = :lastName, emailAddress = :emailAddress, title = :title, summary = :summary where username = :username")
     void updateUserDetails(@Bind("username") String username,
-                      @Bind("firstname") String firstname,
-                      @Bind("lastname") String lastname,
-                      @Bind("address") String address,
+                      @Bind("firstName") String firstName,  
+                      @Bind("lastName") String lastName, 
+                      @Bind("address") String emailAddress,
                       @Bind("title") String title,
                       @Bind("summary") String summary);
 

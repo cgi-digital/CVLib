@@ -9,8 +9,8 @@ public class Profile {
 
     private long id;
     private String username;
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private String title;
     private String summary;
     private boolean admin;
@@ -26,8 +26,8 @@ public class Profile {
         Profile profile = new Profile();
         profile.id = user.getId();
         profile.username = user.getUsername();
-        profile.firstname = user.getFirstname();
-        profile.lastname = user.getLastname();
+        profile.firstName = user.getFirstName();
+        profile.lastName = user.getLastName();
         profile.title = user.getTitle();
         profile.admin = user.isAdmin();
         profile.disabled = user.isDisabled();
@@ -40,8 +40,8 @@ public class Profile {
         Profile profile = new Profile();
         profile.id = user.getId();
         profile.username = user.getUsername();
-        profile.firstname = user.getFirstname();
-        profile.lastname = user.getLastname();
+        profile.firstName = user.getFirstName();
+        profile.lastName = user.getLastName();
         profile.title = user.getTitle();
         profile.summary = user.getSummary();
         profile.admin = user.isAdmin();
@@ -57,8 +57,8 @@ public class Profile {
     {
         this.id = user.getId();
         this.username = user.getUsername();
-        this.firstname = user.getFirstname();
-        this.lastname = user.getLastname();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
         this.title = user.getTitle();
         this.summary = user.getSummary();
     }
@@ -72,11 +72,11 @@ public class Profile {
     }
 
     public String getFirstname() {
-        return firstname;
+        return firstName;
     }
 
     public String getLastname() {
-        return lastname;
+        return lastName;
     }
 
     public String getTitle() {
