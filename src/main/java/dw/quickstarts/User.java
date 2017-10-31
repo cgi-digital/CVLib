@@ -4,29 +4,29 @@ public class User {
     private final long id;
     private final String username;
 
-    private String firstname;
-    private String lastname;
-    private String address;
+    private String firstName;
+    private String lastName;
+    private String emailAddress;
     private String title;
-    private String summary;
+    private String summary; 
 
     private final String salt;
     private final String password;
     private final boolean admin;
     private final boolean disabled;
 
-    public User(long id, String username, String firstname, String lastname, String address, String title, String summary, String salt, String password, boolean admin, boolean disabled) {
+    public User(long id, String username, String firstName, String lastName, String emailAddress, String title, String summary, String salt, String password, boolean admin, boolean disabled) {
         this.id = id;
         this.username = username;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.address = address;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.emailAddress = emailAddress;
         this.title = title;
         this.summary = summary;
         this.salt = salt;
         this.password = password;
         this.admin = admin;
-        this.disabled = disabled;
+        this.disabled = disabled; 
     }
 
     public long getId() {
@@ -37,16 +37,16 @@ public class User {
         return username;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
     public String getAddress() {
-        return address;
+        return emailAddress;
     }
 
     public String getTitle() {

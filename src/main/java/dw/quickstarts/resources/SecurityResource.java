@@ -132,8 +132,9 @@ public class SecurityResource {
                              @Context HttpServletRequest req,
                              @Context UriInfo uriInfo,
                              @FormParam("Username") String username,
-                             @FormParam("FirstName") String firstname,
-                             @FormParam("LastName") String lastname,
+                             @FormParam("FirstName") String firstName,
+                             @FormParam("LastName") String lastName,
+                             @FormParam("EmailAddress") String emailAddress,
                              @FormParam("Password") String password,
                              @FormParam("ReTypePassword") String reTypePassword) throws Exception {
 
@@ -155,7 +156,7 @@ public class SecurityResource {
                 byte[] hash = digest.digest(saltedPassword.getBytes(StandardCharsets.UTF_8));
                 String hexHash = Hex.encodeHexString(hash);
 
-                userDAO.registerUser(username, firstname, lastname,salt,hexHash,false);
+                userDAO.registerUser(username, firstName, lastName, emailAddress, salt, hexHash,false);
 
                 LOGGER.info(messages.get("REGISTRATION"));
 
