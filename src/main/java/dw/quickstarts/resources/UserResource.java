@@ -64,8 +64,8 @@ public class UserResource {
     @LoginRequired
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateUserDetails(@Session HttpSession session, @Context UriInfo uriInfo,
-                                           @FormParam("FirstName") String firstname,
-                                           @FormParam("LastName") String lastname,
+                                           @FormParam("FirstName") String firstName,
+                                           @FormParam("LastName") String lastName,
                                            @FormParam("Address") String address,
                                            @FormParam("Title") String title,
                                            @FormParam("Summary") String summary) throws Exception {
@@ -76,7 +76,7 @@ public class UserResource {
         Long id = (Long) session.getAttribute("userid");
         User user = userDAO.findById(id);
 
-        userDAO.updateUserDetails(user.getUsername(),firstname,lastname,address,title,summary);
+        userDAO.updateUserDetails(user.getUsername(),firstName,lastName,address,title,summary);
 
         return Response.status(Response.Status.OK).build();
     }
