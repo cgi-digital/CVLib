@@ -12,7 +12,6 @@ import io.dropwizard.jersey.sessions.Session;
 import io.dropwizard.views.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import dw.quickstarts.views.HomeView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
