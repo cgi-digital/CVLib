@@ -3,7 +3,7 @@ package dw.quickstarts;
 import dw.quickstarts.dao.*;
 import dw.quickstarts.dao.factory.*;
 import dw.quickstarts.resources.AdminConsoleResource;
-import dw.quickstarts.resources.SkillTestResource;
+import dw.quickstarts.resources.SFIASkillResource;
 import dw.quickstarts.tasks.GetHashedPasswordCommand;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
@@ -70,7 +70,7 @@ public class AuthenticationQuickstartApplication extends Application<Authenticat
         final ProjectDAOFactory projectDAOFactory = new ProjectDAOFactory(projectDAO);
 
         final SFIASkillDAO sfiaSkillDAO = jdbi.onDemand(SFIASkillDAO.class);
-        final SFIASkillDAOFactory skillTestDAOFactory = new SFIASkillDAOFactory(sfiaSkillDAO);
+        final SFIASkillDAOFactory sfiaSkillDAOFactory = new SFIASkillDAOFactory(sfiaSkillDAO);
 
         environment.jersey().register(new AbstractBinder() {
             @Override
@@ -83,7 +83,7 @@ public class AuthenticationQuickstartApplication extends Application<Authenticat
                         .proxy(true).proxyForSameScope(false).in(RequestScoped.class);
                 bindFactory(projectDAOFactory).to(ProjectDAO.class)
                         .proxy(true).proxyForSameScope(false).in(RequestScoped.class);
-                bindFactory(skillTestDAOFactory).to(SFIASkillDAO.class)
+                bindFactory(sfiaSkillDAOFactory).to(SFIASkillDAO.class)
                         .proxy(true).proxyForSameScope(false).in(RequestScoped.class);
             }
         });
@@ -104,7 +104,7 @@ public class AuthenticationQuickstartApplication extends Application<Authenticat
 
         environment.jersey().setUrlPattern("/api/*");
 
-        SkillTestResource skillTestResource = new SkillTestResource(sfiaSkillDAO);
+        SFIASkillResource skillTestResource = new SFIASkillResource(sfiaSkillDAO);
 
         skillTestResource.testing();
 

@@ -232,7 +232,7 @@
 
     <changeSet id="2" author="dw.quickstarts">
 
-        <createTable tableName="skillsTest">
+        <createTable tableName="sfiaSkills">
             <column name="id" type="bigint" autoIncrement="true">
             <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -265,7 +265,7 @@
             </column>
         </createTable>
 
-        <loadData tableName="skillsTest" file="sfiaskills.6.3.en.1.csv">
+        <loadData tableName="sfiaSkills" file="sfiaskills.6.3.en.1.csv">
             <column header="uid" type="skip" />
             <column header="master" type="skip" />
             <column header="title" type="skip" />
@@ -294,4 +294,35 @@
         </loadData>
 
     </changeSet>
+
+    <changeSet id="3" author="dw.quickstarts">
+        <createTable tableName="userSFIASkills">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sfiaid" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="userid" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="userSFIASkills" baseColumnNames="userid"
+                                 constraintName="fk_user_sfiaSkills"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="userSFIASkills" baseColumnNames="sfiaid"
+                                 constraintName="fk_sfiaSkills_user"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedTableName="sfiaSkills"
+                                 referencedColumnNames="uid"/>
+    </changeSet>
+
+
+
 </databaseChangeLog>
