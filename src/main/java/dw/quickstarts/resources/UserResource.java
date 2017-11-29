@@ -179,6 +179,12 @@ public class UserResource {
     }
 
 
+    private void deleteAllUserSkills(Long userId) throws Exception {
+        skillDAO.deleteAllUserSkills(userId);
+    }
+
+
+
     @GET
     @Path("/qualifications")
     @Timed
@@ -387,5 +393,33 @@ public class UserResource {
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
 
+            return Response.status(Response.Status.OK).entity(Profile.getFullProfile(requestedUser, skills, qualifications, projects)).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
+//
+//    @GET
+//    @Path("/some")
+//    @Timed
+//    @LoginRequired
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getSomeUsers(@Context HttpServletRequest request, @Session HttpSession session, @Context UriInfo uriInfo) {
+//
+//        URI logoutLocation = uriInfo
+//                .getBaseUriBuilder()
+//                .path(SecurityResource.class)
+//                .path("/logout")
+//                .scheme(null)
+//                .build();
+//
+//        List<Profile> profiles = new ArrayList<>();
+//        for(User other : userDAO.findAll())
+//        {
+//            profiles.add(Profile.getListProfile(other));
+//        }
+//
+//        return Response.status(Response.Status.OK).entity(profiles).build();
+//    }
+
 }
