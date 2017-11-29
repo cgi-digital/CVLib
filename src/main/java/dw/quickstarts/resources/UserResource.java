@@ -378,11 +378,13 @@ public class UserResource {
 
         if(lastname == null)
             lastname = "";
-        
+
+        firstname = "%" + firstname + "%";
+        lastname = "%" + lastname + "%";
 
 
         List<Profile> profiles = new ArrayList<>();
-        for(User other : userDAO.findByFullName("%" + firstname + "%", "%" + lastname + "%"))
+        for(User other : userDAO.findByFullName(firstname, lastname))
         {
             profiles.add(Profile.getListProfile(other));
         }
