@@ -24,6 +24,9 @@
             <column name="address" type="varchar(50)">
                 <constraints nullable="true" unique="false"/>
             </column>
+            <column name="baselocation" type="varchar(50)">
+                <constraints nullable="true" unique="false"/>
+            </column>
             <column name="title" type="varchar(50)">
                 <constraints nullable="true" unique="false"/>
             </column>
@@ -126,10 +129,10 @@
             <column name="disabled" value="false"/>
         </insert>
         <insert tableName="users">
-            <column name="username" value="guest"/>
-            <column name="firstname" value="Guest"/>
-            <column name="lastname" value="Guest"/>
-            <column name="title" value="Guest"/>
+            <column name="username" value="guestU"/>
+            <column name="firstname" value="GuestF"/>
+            <column name="lastname" value="GuestL"/>
+            <column name="title" value="GuestT"/>
             <column name="summary" value="Guest's summary"/>
             <column name="salt" value="dM87uFPEsdFQ"/>
             <!-- default password is "password" -->

@@ -19,6 +19,21 @@ public interface UserDAO {
     @SqlQuery("select * from users where id = :id")
     User findById(@Bind("id") Long id);
 
+    @SqlQuery("select * from users where admin = true")
+    List<User> findAllAdmins();
+
+    @SqlQuery("select * from users where firstname = :firstname and lastname = :lastname")
+    List<User> findByFullName(@Bind("firstname") String firstname,
+                              @Bind("lastname") String lastname);
+
+    @SqlQuery("select * from users where baselocation = :baselocation")
+    List<User> findByBaseLocation(@Bind("baselocation") String baselocation);
+
+    @SqlQuery("select * skills.skill, skills.level from users" +
+            "inner join skills on users.id=skills.userid" +
+            "where skills.skill = :skill")
+    List<User> findBySkill(@Bind("skill") String skill);
+
     @SqlQuery("select * from users")
     List<User> findAll();
 
@@ -50,6 +65,40 @@ public interface UserDAO {
 
     @SqlUpdate("update users set users.disabled = :disabled where users.id = :id")
     void updateUserEnablement(@Bind("id") Long id, @Bind("disabled") boolean disabled);
+
+    @SqlUpdate("delete from skills where userid = :id")
+    void deleteUserSkills(@Bind("id") Long id);
+
+    /*
+
+    @SqlQuery("select * from users" +
+            "inner join skills on users.id=skills.userid" +
+            "inner join qualifications on users.id=qualifications.userid" +
+            "where" +
+            "users.id like :id and" +
+            "users.username like :id and" +
+            "users.firstname like :id and" +
+            "users.lastname like :id and" +
+            "users.address like :id and" +
+            "users.title like :id and" +
+            "users.summary like :id and" +
+            "users.salt like :id and" +
+            "users.password like :id and" +
+            "users.admin like :id and" +
+            "users.disabled like :id and" +
+
+            "skills.id like :id and" +
+            "skills.userid like :id and" +
+            "skills.skill like :id and" +
+            "skills.level like :id and" +
+
+            "qualifications.id like :id and" +
+            "qualifications.userid like :id and" +
+            "qualifications.qualification like :id"
+    )
+    List<User> findByAny();
+
+    * */
 
     void close();
 }
