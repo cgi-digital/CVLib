@@ -22,7 +22,7 @@ public interface UserDAO {
     @SqlQuery("select * from users where admin = true")
     List<User> findAllAdmins();
 
-    @SqlQuery("select * from users where firstname like :firstname and lastname like :lastname")
+    @SqlQuery("select * from users where firstname like UPPER(:firstname) and lastname like UPPER(:lastname)")
     List<User> findByFullName(@Bind("firstname") String firstname,
                               @Bind("lastname") String lastname);
 
