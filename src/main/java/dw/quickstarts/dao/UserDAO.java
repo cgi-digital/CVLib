@@ -77,8 +77,11 @@ public interface UserDAO {
     @SqlUpdate("delete from skills where userid = :id")
     void deleteUserSkills(@Bind("id") Long id);
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> Added more search queries
     /*
 
     @SqlQuery("select * from users" +

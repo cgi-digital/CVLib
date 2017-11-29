@@ -425,7 +425,6 @@ public class UserResource {
                 .scheme(null)
                 .build();
 
-<<<<<<< HEAD
             User requestedUser = userDAO.findById(userid);
             if(requestedUser != null)
             {
@@ -439,13 +438,6 @@ public class UserResource {
             {
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
-=======
-        User requestedUser = userDAO.findById(userid);
-        if (requestedUser != null) {
-            List<Skill> skills = skillDAO.findUserSkills(userid);
-            List<Qualification> qualifications = qualificationDAO.findUserQualifications(userid);
-            List<Project> projects = projectDAO.findUserProjects(userid);
->>>>>>> Added more search queries
 
             return Response.status(Response.Status.OK).entity(Profile.getFullProfile(requestedUser, skills, qualifications, projects)).build();
         } else {
@@ -465,8 +457,15 @@ public class UserResource {
         System.out.println();
 
 
+            return Response.status(Response.Status.OK).entity(Profile.getFullProfile(requestedUser, skills, qualifications, projects)).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> Added more search queries
 //
 //    @GET
 //    @Path("/some")
