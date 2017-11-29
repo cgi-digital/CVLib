@@ -25,7 +25,7 @@ public interface UserDAO {
     @SqlQuery("select * from users where admin = true")
     List<User> findAllAdmins();
 
-    @SqlQuery("select * from users where firstname = :firstname and lastname = :lastname")
+    @SqlQuery("select * from users where firstname like :firstname and lastname like :lastname")
     List<User> findByFullName(@Bind("firstname") String firstname,
                               @Bind("lastname") String lastname);
 
