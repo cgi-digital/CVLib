@@ -412,6 +412,30 @@ public class UserResource {
     }
 
     @GET
+    @Path("/search/name")
+    @Timed
+    @LoginRequired
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllUsersByName(@Context HttpServletRequest request, @Session HttpSession session, @Context UriInfo uriInfo,
+                                      @QueryParam("firstname") String firstname, @QueryParam("lastname") String lastname) {
+
+
+        if(firstname == null || firstname.isEmpty())
+            firstname = "%";
+
+        if(lastname == null || lastname.isEmpty())
+            lastname = "%";
+
+        List<Profile> profiles = new ArrayList<>();
+        for(User other : userDAO.findByFullName(firstname, lastname))
+        {
+            profiles.add(Profile.getListProfile(other));
+        }
+
+        return Response.status(Response.Status.OK).entity(profiles).build();
+    }
+
+    @GET
     @Path("/id/{userid}")
     @Timed
     @LoginRequired
