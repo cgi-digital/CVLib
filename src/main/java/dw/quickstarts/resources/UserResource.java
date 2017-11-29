@@ -358,14 +358,16 @@ public class UserResource {
                                       @QueryParam("firstname") String firstname, @QueryParam("lastname") String lastname) {
 
 
-        if(firstname == null || firstname.isEmpty())
-            firstname = "%";
+        if(firstname == null)
+            firstname = "";
 
-        if(lastname == null || lastname.isEmpty())
-            lastname = "%";
+        if(lastname == null)
+            lastname = "";
+        
+
 
         List<Profile> profiles = new ArrayList<>();
-        for(User other : userDAO.findByFullName(firstname, lastname))
+        for(User other : userDAO.findByFullName("%" + firstname + "%", "%" + lastname + "%"))
         {
             profiles.add(Profile.getListProfile(other));
         }
