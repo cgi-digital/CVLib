@@ -378,56 +378,11 @@ public class UserResource {
 
         if(lastname == null)
             lastname = "";
-
-        firstname = "%" + firstname + "%";
-        lastname = "%" + lastname + "%";
+        
 
 
         List<Profile> profiles = new ArrayList<>();
-        for(User other : userDAO.findByFullName(firstname, lastname))
-        {
-            profiles.add(Profile.getListProfile(other));
-        }
-
-        return Response.status(Response.Status.OK).entity(profiles).build();
-    }
-
-    @GET
-    @Path("/search/skills")
-    @Timed
-    @LoginRequired
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllUsersBySkills(@Context HttpServletRequest request, @Session HttpSession session, @Context UriInfo uriInfo,
-                                        @QueryParam("skills") List<String> skills){ //@QueryParam("skills") Set<String> skills){
-
-        skills.replaceAll(String::toUpperCase);
-
-        List<Profile> profiles = new ArrayList<>();
-        for(User other : userDAO.findBySkill(skills))
-        {
-            profiles.add(Profile.getListProfile(other));
-        }
-
-        return Response.status(Response.Status.OK).entity(profiles).build();
-    }
-
-    @GET
-    @Path("/search/name")
-    @Timed
-    @LoginRequired
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllUsersByName(@Context HttpServletRequest request, @Session HttpSession session, @Context UriInfo uriInfo,
-                                      @QueryParam("firstname") String firstname, @QueryParam("lastname") String lastname) {
-
-
-        if(firstname == null || firstname.isEmpty())
-            firstname = "%";
-
-        if(lastname == null || lastname.isEmpty())
-            lastname = "%";
-
-        List<Profile> profiles = new ArrayList<>();
-        for(User other : userDAO.findByFullName(firstname, lastname))
+        for(User other : userDAO.findByFullName("%" + firstname + "%", "%" + lastname + "%"))
         {
             profiles.add(Profile.getListProfile(other));
         }
@@ -486,10 +441,6 @@ public class UserResource {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> Added more search queries
 //
 //    @GET
 //    @Path("/some")
