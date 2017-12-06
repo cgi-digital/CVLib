@@ -393,6 +393,25 @@ public class UserResource {
     }
 
     @GET
+    @Path("/search/skills")
+    @Timed
+    @LoginRequired
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllUsersBySkills(@Context HttpServletRequest request, @Session HttpSession session, @Context UriInfo uriInfo,
+                                        @QueryParam("skills") List<String> skills){ //@QueryParam("skills") Set<String> skills){
+
+        skills.replaceAll(String::toUpperCase);
+
+        List<Profile> profiles = new ArrayList<>();
+        for(User other : userDAO.findBySkill(skills))
+        {
+            profiles.add(Profile.getListProfile(other));
+        }
+
+        return Response.status(Response.Status.OK).entity(profiles).build();
+    }
+
+    @GET
     @Path("/id/{userid}")
     @Timed
     @LoginRequired
@@ -438,11 +457,8 @@ public class UserResource {
         System.out.println();
 
 
-            return Response.status(Response.Status.OK).entity(Profile.getFullProfile(requestedUser, skills, qualifications, projects)).build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
     }
+
 //
 //    @GET
 //    @Path("/some")
