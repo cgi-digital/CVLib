@@ -15,13 +15,12 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @Path("/user")
 public class UserResource {
@@ -394,6 +393,25 @@ public class UserResource {
     }
 
     @GET
+    @Path("/search/skills")
+    @Timed
+    @LoginRequired
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllUsersBySkills(@Context HttpServletRequest request, @Session HttpSession session, @Context UriInfo uriInfo,
+                                        @QueryParam("skills") List<String> skills){ //@QueryParam("skills") Set<String> skills){
+
+        skills.replaceAll(String::toUpperCase);
+
+        List<Profile> profiles = new ArrayList<>();
+        for(User other : userDAO.findBySkill(skills))
+        {
+            profiles.add(Profile.getListProfile(other));
+        }
+
+        return Response.status(Response.Status.OK).entity(profiles).build();
+    }
+
+    @GET
     @Path("/id/{userid}")
     @Timed
     @LoginRequired
@@ -426,6 +444,21 @@ public class UserResource {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
+
+    public void testArray() {
+
+        String[] testSQL = new String[2];
+        testSQL[0] = "Guest";
+        testSQL[1] = "admin";
+
+
+        //List<User> users = userDAO.insertingSQLTest(Arrays.asList(testSQL));
+
+        System.out.println();
+
+
+    }
+
 //
 //    @GET
 //    @Path("/some")

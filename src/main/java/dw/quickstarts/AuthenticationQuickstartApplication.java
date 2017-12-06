@@ -103,5 +103,10 @@ public class AuthenticationQuickstartApplication extends Application<Authenticat
         environment.jersey().register(new AdminConsoleResource(userDAO,qualificationDAO,projectDAO));
 
         environment.jersey().setUrlPattern("/api/*");
+
+//        UserResource test = new UserResource(userDAO,skillDAO,qualificationDAO,projectDAO);
+//        test.testArray();
+
+
     }
 }
