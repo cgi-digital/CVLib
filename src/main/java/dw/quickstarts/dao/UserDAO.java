@@ -3,13 +3,17 @@ package dw.quickstarts.dao;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
+import org.skife.jdbi.v2.sqlobject.customizers.Define;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 import dw.quickstarts.User;
 import dw.quickstarts.dao.mappers.UserMapper;
+import org.skife.jdbi.v2.sqlobject.stringtemplate.UseStringTemplate3StatementLocator;
+import org.skife.jdbi.v2.unstable.BindIn;
 
 import java.util.List;
 import java.util.Set;
 
+@UseStringTemplate3StatementLocator
 @RegisterMapper(UserMapper.class)
 public interface UserDAO {
 
@@ -29,10 +33,11 @@ public interface UserDAO {
     @SqlQuery("select * from users where baselocation = :baselocation")
     List<User> findByBaseLocation(@Bind("baselocation") String baselocation);
 
-    @SqlQuery("select * skills.skill, skills.level from users" +
-            "inner join skills on users.id=skills.userid" +
-            "where skills.skill = :skill")
-    List<User> findBySkill(@Bind("skill") String skill);
+
+    //SELECT distinct users.* FROM USERS, SKILLS WHERE SKILLS.USERID = USERS.ID AND SKILLS.SKILL IN ('Java', 'C#') group by SKILLS.USERID having count(*) = 2;
+    @SqlQuery("select distinct users.* from users, skills where skills.userid = users.id and UPPER(skills.skill) CONTAINS (<skills>)")
+    List<User> findBySkill(@BindIn("skills") List<String> skills);
+
 
     @SqlQuery("select * from users")
     List<User> findAll();
@@ -68,6 +73,8 @@ public interface UserDAO {
 
     @SqlUpdate("delete from skills where userid = :id")
     void deleteUserSkills(@Bind("id") Long id);
+
+
 
     /*
 
