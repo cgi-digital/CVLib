@@ -31,7 +31,7 @@ public interface SkillDAO {
     void addUserSkill(@Bind("userid") Long userid, @Bind("skillid") Long skillid, @Bind("level") int level);
 
     @SqlUpdate("insert into skills (skill, type) values (:skill, :type)")
-    Skill addSkill(@Bind("skill") String skill, @Bind("type") String type);
+    void addSkill(@Bind("skill") String skill, @Bind("type") String type);
 
     @SqlUpdate("update skills set skill = :skill, level = :level where id = :id AND userid = :userid")
     void updateSkill(@Bind("id") Long id, @Bind("userid") Long userid, @Bind("skill") String skill, @Bind("level") int level);
