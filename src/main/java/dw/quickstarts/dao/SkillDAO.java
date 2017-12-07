@@ -5,6 +5,7 @@ import dw.quickstarts.Skill;
 import dw.quickstarts.UserSkill;
 import dw.quickstarts.dao.mappers.QualificationMapper;
 import dw.quickstarts.dao.mappers.SkillMapper;
+import dw.quickstarts.dao.mappers.UserSkillMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
@@ -18,6 +19,7 @@ import java.util.List;
 @RegisterMapper(SkillMapper.class)
 public interface SkillDAO {
 
+    @RegisterMapper(UserSkillMapper.class)
     @SqlQuery("select userskill.*, skills.skill, skills.type from skills, userskill where userskill.userid = :userid")
     List<UserSkill> findUserSkills(@Bind("userid") long userid);
 
