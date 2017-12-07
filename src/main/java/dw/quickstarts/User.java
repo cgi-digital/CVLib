@@ -2,11 +2,11 @@ package dw.quickstarts;
 
 public class User {
     private final long id;
-    private final String username;
-
+    private final String email;
+    private String employeeid;
+    private String baselocation;
     private String firstName;
     private String lastName;
-    private String emailAddress;
     private String title;
     private String summary; 
 
@@ -15,12 +15,13 @@ public class User {
     private final boolean admin;
     private final boolean disabled;
 
-    public User(long id, String username, String firstName, String lastName, String emailAddress, String title, String summary, String salt, String password, boolean admin, boolean disabled) {
+    public User(long id, String email, String employeeid, String baselocation, String firstName, String lastName, String title, String summary, String salt, String password, boolean admin, boolean disabled) {
         this.id = id;
-        this.username = username;
+        this.email = email;
+        this.employeeid = employeeid;
+        this.baselocation = baselocation;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.emailAddress = emailAddress;
         this.title = title;
         this.summary = summary;
         this.salt = salt;
@@ -33,8 +34,16 @@ public class User {
         return id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
+    }
+
+    public String getEmployeeid() {
+        return employeeid;
+    }
+
+    public String getBaselocation() {
+        return baselocation;
     }
 
     public String getFirstName() {
@@ -43,10 +52,6 @@ public class User {
 
     public String getLastName() {
         return lastName;
-    }
-
-    public String getAddress() {
-        return emailAddress;
     }
 
     public String getTitle() {

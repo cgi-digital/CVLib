@@ -25,7 +25,7 @@ public class Profile {
     {
         Profile profile = new Profile();
         profile.id = user.getId();
-        profile.username = user.getUsername();
+        profile.username = user.getEmail();
         profile.firstName = user.getFirstName();
         profile.lastName = user.getLastName();
         profile.title = user.getTitle();
@@ -39,7 +39,7 @@ public class Profile {
     {
         Profile profile = new Profile();
         profile.id = user.getId();
-        profile.username = user.getUsername();
+        profile.username = user.getEmail();
         profile.firstName = user.getFirstName();
         profile.lastName = user.getLastName();
         profile.title = user.getTitle();
@@ -56,7 +56,7 @@ public class Profile {
     private Profile(User user)
     {
         this.id = user.getId();
-        this.username = user.getUsername();
+        this.username = user.getEmail();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.title = user.getTitle();

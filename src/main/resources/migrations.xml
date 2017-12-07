@@ -7,13 +7,32 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
     <changeSet id="1" author="dw.quickstarts">
+        <!-- BaseOffice -->
+        <createTable tableName="baseoffice">
+            <column name="officecode" type="varchar(50)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="locationname" type="varchar(100)">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="address" type="varchar(1000)">
+                <constraints nullable="true" unique="false" />
+            </column>
+            <column name="postcode" type="varchar(20)">
+                <constraints nullable="true" unique="false" />
+            </column>
+        </createTable>
+        
         <!-- Users -->
         <createTable tableName="users">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="username" type="varchar(50)">
+            <column name="email" type="varchar(50)">
                 <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="employeeid" type="varchar(20)">
+                <constraints nullable="true" unique="true"/>
             </column>
             <column name="firstname" type="varchar(50)">
                 <constraints nullable="false" unique="false"/>
@@ -21,7 +40,7 @@
             <column name="lastname" type="varchar(50)">
                 <constraints nullable="false" unique="false"/>
             </column>
-            <column name="address" type="varchar(50)">
+            <column name="baselocation" type="varchar(50)">
                 <constraints nullable="true" unique="false"/>
             </column>
             <column name="title" type="varchar(50)">
@@ -43,28 +62,87 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <addForeignKeyConstraint baseTableName="users" baseColumnNames="baselocation" constraintName="fk_user_baselocation"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"
+                                 referencedTableName="baseoffice"
+                                 referencedColumnNames="officecode"/>
+
+        <!-- Phone No -->
+        <createTable tableName="phonenumber">
+            <column name="phonenumber" type="varchar(50)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="userid" type="bigint">
+                <constraints nullable="false" unique="false" />
+            </column>
+            <column name="type" type="varchar(30)">
+                <constraints nullable="true" unique="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="phonenumber" baseColumnNames="userid" constraintName="fk_phonenumber_user"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+        
+        <!-- SkillType -->
+        <createTable tableName="skilltype">
+            <column name="type" type="varchar(50)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+        </createTable>
 
         <!-- Skills -->
         <createTable tableName="skills">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="userid" type="bigint">
-                <constraints nullable="false" unique="false"/>
-            </column>
             <column name="skill" type="varchar(100)">
                 <constraints nullable="false" unique="false"/>
             </column>
-            <column name="level" type="bigint">
+            <column name="minlevel" type="bigint" defaultValueNumeric="1">
                 <constraints nullable="false" unique="false"/>
             </column>
+            <column name="maxlevel" type="bigint" defaultValueNumeric="5">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="type" type="varchar(50)">
+                <constraints nullable="true" unique="false" />
+            </column>
+            <column name="sfiacode" type="varchar(20)">
+                <constraints nullable="true" unique="true" />
+            </column>
         </createTable>
-        <addForeignKeyConstraint baseTableName="skills" baseColumnNames="userid"
-                                 constraintName="fk_skill"
+        <addForeignKeyConstraint baseTableName="skills" baseColumnNames="type" constraintName="fk_skills_skilltype"
                                  onDelete="CASCADE"
-                                 onUpdate="NO ACTION"
+                                 onUpdate="CASCADE"
+                                 referencedTableName="skilltype"
+                                 referencedColumnNames="type" />
+        
+        <!-- Links Skills and Users -->
+        <createTable tableName="userskill">
+            <column name="userid" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="false"/>
+            </column>
+            <column name="skillid" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="false"/>
+            </column>
+            <column name="level" type="bigint">
+                <constraints nullable="false" unique="false" />
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="userskill" baseColumnNames="userid" constraintName="fk_userskill_user"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"
                                  referencedTableName="users"
                                  referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="userskill" baseColumnNames="skillid" constraintName="fk_userskill_skills"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"
+                                 referencedTableName="skills"
+                                 referencedColumnNames="id"/>
+
 
         <!-- Qualifications -->
         <createTable tableName="qualifications">
@@ -81,7 +159,7 @@
         <addForeignKeyConstraint baseTableName="qualifications" baseColumnNames="userid"
                                  constraintName="fk_qualification"
                                  onDelete="CASCADE"
-                                 onUpdate="NO ACTION"
+                                 onUpdate="CASCADE"
                                  referencedTableName="users"
                                  referencedColumnNames="id"/>
 
@@ -109,12 +187,37 @@
         <addForeignKeyConstraint baseTableName="projects" baseColumnNames="userid"
                                  constraintName="fk_project"
                                  onDelete="CASCADE"
-                                 onUpdate="NO ACTION"
+                                 onUpdate="CASCADE"
                                  referencedTableName="users"
                                  referencedColumnNames="id"/>
 
+        <insert tableName="skilltype">
+            <column name="type" value="ICT" />
+        </insert>
+        <insert tableName="skilltype">
+            <column name="type" value="Technical" />
+        </insert>
+        <insert tableName="skilltype">
+            <column name="type" value="Other"/>
+        </insert>
+        
+        <insert tableName="baseoffice">
+            <column name="officecode" value="RDG001"/>
+            <column name="locationname" value="Reading"/>
+            <column name="address" value="100 Test Drive, \nReading" />
+            <column name="postcode" value="RG1 2AB" />
+        </insert>
+        <insert tableName="baseoffice">
+            <column name="officecode" value="LDN004" />
+            <column name="locationname" value="London - Kings Cross" />
+            <column name="address" value="20 Kings Road, \nLondon" />
+            <column name="postcode" value="LD1 8TH" />
+        </insert>
+        
         <insert tableName="users">
-            <column name="username" value="admin"/>
+            <column name="email" value="admin@test.com"/>
+            <column name="employeeid" value="12345" />
+            <column name="baselocation" value="LDN004" />
             <column name="firstname" value="Admin"/>
             <column name="lastname" value="Admin"/>
             <column name="title" value="Admin"/>
@@ -126,7 +229,9 @@
             <column name="disabled" value="false"/>
         </insert>
         <insert tableName="users">
-            <column name="username" value="guest"/>
+            <column name="email" value="guest@test.com"/>
+            <column name="employeeid" value="54321" />
+            <column name="baselocation" value="RDG001" />
             <column name="firstname" value="Guest"/>
             <column name="lastname" value="Guest"/>
             <column name="title" value="Guest"/>
@@ -137,11 +242,49 @@
             <column name="admin" value="false"/>
             <column name="disabled" value="false"/>
         </insert>
-        <insert tableName="skills">
-            <column name="userid" value="2"/>
-            <column name="skill" value="Java"/>
-            <column name="level" value="5"/>
+        
+        <insert tableName="phonenumber">
+            <column name="phonenumber" value="12345678910" />
+            <column name="userid" value="1" />
+            <column name="type" value="Work" />
         </insert>
+        <insert tableName="phonenumber">
+            <column name="phonenumber" value="12345543210" />
+            <column name="userid" value="1" />
+            <column name="type" value="Personal" />
+        </insert>
+        <insert tableName="phonenumber">
+            <column name="phonenumber" value="10987654321" />
+            <column name="userid" value="2" />
+            <column name="type" value="Work" />
+        </insert>
+        
+        <insert tableName="skills">
+            <column name="skill" value="Java"/>
+            <column name="type" value="Technical" />
+        </insert>
+        <insert tableName="skills">
+            <column name="skill" value="HTML" />
+            <column name="type" value="Technical" />
+        </insert>
+        
+        <insert tableName="userskill">
+            <column name="userid" value="1" />
+            <column name="skillid" value="1" />
+            <column name="level" value="4" />
+        </insert>
+        <insert tableName="userskill">
+            <column name="userid" value="2" />
+            <column name="skillid" value="1" />
+            <column name="level" value="2" />
+        </insert>
+        <insert tableName="userskill">
+            <column name="userid" value="2" />
+            <column name="skillid" value="2" />
+            <column name="level" value="2" />
+        </insert>
+        
+
         <insert tableName="qualifications">
             <column name="userid" value="2"/>
             <column name="qualification" value="M.Sc Computer Science, University of Southampton"/>

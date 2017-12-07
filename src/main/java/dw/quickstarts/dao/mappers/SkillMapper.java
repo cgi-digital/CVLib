@@ -15,9 +15,11 @@ public class SkillMapper implements ResultSetMapper<Skill> {
     @Override
     public Skill map(int i, ResultSet resultSet, StatementContext statementContext) throws SQLException {
         return new Skill(resultSet.getLong("id"),
-                resultSet.getLong("userid"),
                 resultSet.getString("skill"),
-                resultSet.getInt("level")
+                resultSet.getInt("minlevel"),
+                resultSet.getInt("maxlevel"),
+                resultSet.getString("sfiacode"),
+                resultSet.getString("type")
         );
     }
 }

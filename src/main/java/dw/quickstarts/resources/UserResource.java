@@ -9,10 +9,8 @@ import dw.quickstarts.dao.SkillDAO;
 import dw.quickstarts.dao.UserDAO;
 import dw.quickstarts.utilities.URITools;
 import io.dropwizard.jersey.sessions.Session;
-import io.dropwizard.views.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import dw.quickstarts.views.HomeView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -76,7 +74,7 @@ public class UserResource {
         Long id = (Long) session.getAttribute("userid");
         User user = userDAO.findById(id);
 
-        userDAO.updateUserDetails(user.getUsername(),firstName,lastName,address,title,summary);
+        userDAO.updateUserDetails(user.getEmail(),firstName,lastName,address,title,summary);
 
         return Response.status(Response.Status.OK).build();
     }

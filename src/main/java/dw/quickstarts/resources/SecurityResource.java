@@ -4,11 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import dw.quickstarts.ExceptionFormatter;
 import dw.quickstarts.User;
 import dw.quickstarts.dao.UserDAO;
-import dw.quickstarts.utilities.URITools;
-import dw.quickstarts.views.security.LoginView;
-import dw.quickstarts.views.security.RegisterView;
 import io.dropwizard.jersey.sessions.Session;
-import io.dropwizard.views.View;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -19,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -67,7 +62,7 @@ public class SecurityResource {
                 byte[] hash = digest.digest(passwordGuess.getBytes(StandardCharsets.UTF_8));
                 String hexHash = Hex.encodeHexString(hash);
                 if (hexHash.compareToIgnoreCase(u.getPassword()) == 0) {
-                    session.setAttribute("username", u.getUsername());
+                    session.setAttribute("username", u.getEmail());
                     session.setAttribute("userid", u.getId());
                     session.setAttribute("authenticated", true);
                     if(u.isAdmin())
@@ -76,12 +71,12 @@ public class SecurityResource {
                     }
 
                     if (req.getHeader("X-Forwarded-For") != null) {
-                        LOGGER.info(String.format("Successful login for %s from ip %s (%s)", u.getUsername(),
+                        LOGGER.info(String.format("Successful login for %s from ip %s (%s)", u.getEmail(),
                                 req.getHeader("X-Forwarded-For"),
                                 req.getRemoteHost()));
                     } else {
                         LOGGER.info(String.format("Successful login for %s from ip %s",
-                                u.getUsername(), req.getRemoteHost()));
+                                u.getEmail(), req.getRemoteHost()));
                     }
                     return Response.seeOther(uriInfo.getBaseUriBuilder().path(UserResource.class).build()).build();
                 }

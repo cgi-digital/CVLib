@@ -6,31 +6,43 @@ package dw.quickstarts;
 public class Skill {
 
     private final long id;
-    private final long userid;
     private String skill;
-    private int level;
+    private int minLevel;
+    private int maxLevel;
+    private String sfiaCode;
+    private String type;
 
 
-    public Skill(long id, long userid, String skill, int level) {
+    public Skill(long id, String skill, int minLevel, int maxLevel, String sfiaCode, String type) {
         this.id = id;
-        this.userid = userid;
         this.skill = skill;
-        this.level = level;
+        this.minLevel = minLevel;
+        this.maxLevel = maxLevel;
+        this.sfiaCode = sfiaCode;
+        this.type = type;
     }
 
     public long getId() {
         return id;
     }
 
-    public long getUserid() {
-        return userid;
-    }
-
     public String getSkill() {
         return skill;
     }
 
-    public int getLevel() {
-        return level;
+    public int getMinLevel() {
+        return minLevel;
+    }
+
+    public int getMaxLevel() {
+        return maxLevel;
+    }
+
+    public String getSfiaCode() {
+        return sfiaCode;
+    }
+
+    public String getType() {
+        return type;
     }
 }
