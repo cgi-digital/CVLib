@@ -50,7 +50,7 @@ public class UserResource {
         Long id = (Long) session.getAttribute("userid");
         User user = userDAO.findById(id);
 
-        List<UserSkill> skills = skillDAO.findUserSkills(id);
+        List<UserSkillView> skills = skillDAO.findUserSkills(id);
         List<Qualification> qualifications = qualificationDAO.findUserQualifications(id);
         List<Project> projects = projectDAO.findUserProjects(id);
 
@@ -111,8 +111,8 @@ public class UserResource {
         URI logoutLocation = URITools.buildURI(uriInfo, SecurityResource.class, "/logout");
         URI adminConsoleLocation = URITools.buildURI(uriInfo, AdminConsoleResource.class, "");
 
-        Long id = (Long) session.getAttribute("userid");
-        User user = userDAO.findById(id);
+        Long userid = (Long) session.getAttribute("userid");
+        User user = userDAO.findById(userid);
 
 
         //skillDAO.addSkill(user.getId(),skill,level);
@@ -123,15 +123,18 @@ public class UserResource {
             // add skill to db
             skillDAO.addSkill(skill, "Other");
             newUserSkill = skillDAO.findSkillByName(skill);
-            skillDAO.addUserSkill(id, newUserSkill.getId(), level);
+            skillDAO.addUserSkill(userid, newUserSkill.getId(), level);
 
         }
         else {
-            skillDAO.addUserSkill(id, newUserSkill.getId(), level);
+
+            if(skillDAO.findUserSkillById(userid, newUserSkill.getId()) == null)
+                skillDAO.addUserSkill(userid, newUserSkill.getId(), level);
+
         }
 
 
-        return Response.status(Response.Status.OK).entity(skillDAO.findUserSkills(id)).build();
+        return Response.status(Response.Status.OK).entity(skillDAO.findUserSkills(userid)).build();
     }
 
     @PUT
@@ -373,7 +376,7 @@ public class UserResource {
             User requestedUser = userDAO.findById(userid);
             if(requestedUser != null)
             {
-                List<UserSkill> skills = skillDAO.findUserSkills(userid);
+                List<UserSkillView> skills = skillDAO.findUserSkills(userid);
                 List<Qualification> qualifications = qualificationDAO.findUserQualifications(userid);
                 List<Project> projects = projectDAO.findUserProjects(userid);
 

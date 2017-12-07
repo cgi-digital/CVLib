@@ -1,11 +1,11 @@
 package dw.quickstarts.dao;
 
-import dw.quickstarts.Qualification;
 import dw.quickstarts.Skill;
 import dw.quickstarts.UserSkill;
-import dw.quickstarts.dao.mappers.QualificationMapper;
+import dw.quickstarts.UserSkillView;
 import dw.quickstarts.dao.mappers.SkillMapper;
 import dw.quickstarts.dao.mappers.UserSkillMapper;
+import dw.quickstarts.dao.mappers.UserSkillViewMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
@@ -19,13 +19,14 @@ import java.util.List;
 @RegisterMapper(SkillMapper.class)
 public interface SkillDAO {
 
-    @RegisterMapper(UserSkillMapper.class)
+    @RegisterMapper(UserSkillViewMapper.class)
     @SqlQuery("select userskill.*, skills.skill, skills.type from skills, userskill where userskill.userid = :userid and skills.id = userskill.skillid")
-    List<UserSkill> findUserSkills(@Bind("userid") long userid);
+    List<UserSkillView> findUserSkills(@Bind("userid") long userid);
 
 
-    @SqlQuery("select * from skills where id = :id")
-    Skill findUserSkillById(@Bind("id") long id);
+    @RegisterMapper(UserSkillMapper.class)
+    @SqlQuery("select * from userskill where userid = :userid and skillid = :skillid")
+    UserSkill findUserSkillById(@Bind("userid") long userid, @Bind("skillid") long skillid);
 
     @SqlQuery("select * from skills where UPPER(skill) = UPPER(:name)")
     Skill findSkillByName(@Bind("name") String name);

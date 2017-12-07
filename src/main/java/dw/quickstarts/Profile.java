@@ -15,7 +15,7 @@ public class Profile {
     private String summary;
     private boolean admin;
     private boolean disabled;
-    private List<UserSkill> skills;
+    private List<UserSkillView> skills;
     private List<Qualification> qualifications;
     private List<Project> projects;
 
@@ -35,7 +35,7 @@ public class Profile {
         return profile;
     }
 
-    public static Profile getFullProfile(User user, List<UserSkill> skills, List<Qualification> qualifications, List<Project> projects)
+    public static Profile getFullProfile(User user, List<UserSkillView> skills, List<Qualification> qualifications, List<Project> projects)
     {
         Profile profile = new Profile();
         profile.id = user.getId();
@@ -95,7 +95,7 @@ public class Profile {
         return disabled;
     }
 
-    public List<UserSkill> getSkills() {
+    public List<UserSkillView> getSkills() {
         return skills;
     }
 

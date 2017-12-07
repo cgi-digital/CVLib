@@ -1,7 +1,7 @@
 package dw.quickstarts.dao.mappers;
 
-import dw.quickstarts.Skill;
 import dw.quickstarts.UserSkill;
+import dw.quickstarts.UserSkillView;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
@@ -17,9 +17,7 @@ public class UserSkillMapper implements ResultSetMapper<UserSkill> {
     public UserSkill map(int i, ResultSet resultSet, StatementContext statementContext) throws SQLException {
         return new UserSkill(resultSet.getLong("userid"),
                 resultSet.getLong("skillid"),
-                resultSet.getInt("level"),
-                resultSet.getString("skill"),
-                resultSet.getString("type")
+                resultSet.getInt("level")
         );
     }
 
