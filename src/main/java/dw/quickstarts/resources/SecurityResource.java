@@ -53,7 +53,7 @@ public class SecurityResource {
         //TODO escape user input
         User u = null;
         if (StringUtils.isNotBlank(username)) {
-            u = userDAO.findByUsername(username);
+            u = userDAO.findByEmail(username);
         }
         if (u != null) {
             String passwordGuess = String.format("%s%s", u.getSalt(), password);
