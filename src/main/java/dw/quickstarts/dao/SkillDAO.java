@@ -2,6 +2,7 @@ package dw.quickstarts.dao;
 
 import dw.quickstarts.Qualification;
 import dw.quickstarts.Skill;
+import dw.quickstarts.UserSkill;
 import dw.quickstarts.dao.mappers.QualificationMapper;
 import dw.quickstarts.dao.mappers.SkillMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
@@ -17,14 +18,20 @@ import java.util.List;
 @RegisterMapper(SkillMapper.class)
 public interface SkillDAO {
 
-    @SqlQuery("select * from skills where userid = :userid")
-    List<Skill> findUserSkills(@Bind("userid") long userid);
+    @SqlQuery("select userskill.*, skills.skill, skills.type from skills, userskill where userskill.userid = :userid")
+    List<UserSkill> findUserSkills(@Bind("userid") long userid);
 
     @SqlQuery("select * from skills where id = :id")
     Skill findUserSkillById(@Bind("id") long id);
 
-    @SqlUpdate("insert into skills (userid, skill, level) values (:userid , :skill, :level)")
-    void addSkill(@Bind("userid") Long userid, @Bind("skill") String skill, @Bind("level") int level);
+    @SqlQuery("select * from skills where UPPER(skill) = UPPER(:name)")
+    Skill findSkillByName(@Bind("name") String name);
+
+    @SqlUpdate("insert into userskill (userid, skillid, level) values (:userid, :skillid, :level)")
+    void addUserSkill(@Bind("userid") Long userid, @Bind("skillid") Long skillid, @Bind("level") int level);
+
+    @SqlUpdate("insert into skills (skill, type) values (:skill, :type)")
+    Skill addSkill(@Bind("skill") String skill, @Bind("type") String type);
 
     @SqlUpdate("update skills set skill = :skill, level = :level where id = :id AND userid = :userid")
     void updateSkill(@Bind("id") Long id, @Bind("userid") Long userid, @Bind("skill") String skill, @Bind("level") int level);

@@ -50,7 +50,7 @@ public class UserResource {
         Long id = (Long) session.getAttribute("userid");
         User user = userDAO.findById(id);
 
-        List<Skill> skills = skillDAO.findUserSkills(id);
+        List<UserSkill> skills = skillDAO.findUserSkills(id);
         List<Qualification> qualifications = qualificationDAO.findUserQualifications(id);
         List<Project> projects = projectDAO.findUserProjects(id);
 
@@ -82,23 +82,23 @@ public class UserResource {
 
 
 
-    @GET
-    @Path("/skills")
-    @Timed
-    @LoginRequired
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Skill> getSkills(@Session HttpSession session, @Context UriInfo uriInfo) throws Exception {
-
-        URI logoutLocation = URITools.buildURI(uriInfo, SecurityResource.class, "/logout");
-        URI adminConsoleLocation = URITools.buildURI(uriInfo, AdminConsoleResource.class, "");
-
-        Long id = (Long) session.getAttribute("userid");
-        User user = userDAO.findById(id);
-
-        List<Skill> skills = skillDAO.findUserSkills(user.getId());
-
-        return skills;
-    }
+//    @GET
+//    @Path("/skills")
+//    @Timed
+//    @LoginRequired
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public List<Skill> getSkills(@Session HttpSession session, @Context UriInfo uriInfo) throws Exception {
+//
+//        URI logoutLocation = URITools.buildURI(uriInfo, SecurityResource.class, "/logout");
+//        URI adminConsoleLocation = URITools.buildURI(uriInfo, AdminConsoleResource.class, "");
+//
+//        Long id = (Long) session.getAttribute("userid");
+//        User user = userDAO.findById(id);
+//
+//        List<Skill> skills = skillDAO.findUserSkills(user.getId());
+//
+//        return skills;
+//    }
 
     @POST
     @Path("/skills")
@@ -114,7 +114,21 @@ public class UserResource {
         Long id = (Long) session.getAttribute("userid");
         User user = userDAO.findById(id);
 
-        skillDAO.addSkill(user.getId(),skill,level);
+
+        //skillDAO.addSkill(user.getId(),skill,level);
+        Skill newUserSkill = skillDAO.findSkillByName(skill);
+
+        if(newUserSkill == null)
+        {
+            // add skill to db
+            newUserSkill = skillDAO.addSkill(skill, "Other");
+            skillDAO.addUserSkill(id, newUserSkill.getId(), level);
+
+        }
+        else {
+            skillDAO.addUserSkill(id, newUserSkill.getId(), level);
+        }
+
 
         return Response.status(Response.Status.OK).entity(skillDAO.findUserSkills(id)).build();
     }
@@ -358,7 +372,7 @@ public class UserResource {
             User requestedUser = userDAO.findById(userid);
             if(requestedUser != null)
             {
-                List<Skill> skills = skillDAO.findUserSkills(userid);
+                List<UserSkill> skills = skillDAO.findUserSkills(userid);
                 List<Qualification> qualifications = qualificationDAO.findUserQualifications(userid);
                 List<Project> projects = projectDAO.findUserProjects(userid);
 

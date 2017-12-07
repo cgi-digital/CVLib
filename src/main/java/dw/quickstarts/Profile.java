@@ -8,14 +8,14 @@ import java.util.List;
 public class Profile {
 
     private long id;
-    private String username;
+    private String email;
     private String firstName;
     private String lastName;
     private String title;
     private String summary;
     private boolean admin;
     private boolean disabled;
-    private List<Skill> skills;
+    private List<UserSkill> skills;
     private List<Qualification> qualifications;
     private List<Project> projects;
 
@@ -25,7 +25,7 @@ public class Profile {
     {
         Profile profile = new Profile();
         profile.id = user.getId();
-        profile.username = user.getEmail();
+        profile.email = user.getEmail();
         profile.firstName = user.getFirstName();
         profile.lastName = user.getLastName();
         profile.title = user.getTitle();
@@ -35,11 +35,11 @@ public class Profile {
         return profile;
     }
 
-    public static Profile getFullProfile(User user, List<Skill> skills, List<Qualification> qualifications, List<Project> projects)
+    public static Profile getFullProfile(User user, List<UserSkill> skills, List<Qualification> qualifications, List<Project> projects)
     {
         Profile profile = new Profile();
         profile.id = user.getId();
-        profile.username = user.getEmail();
+        profile.email = user.getEmail();
         profile.firstName = user.getFirstName();
         profile.lastName = user.getLastName();
         profile.title = user.getTitle();
@@ -56,7 +56,7 @@ public class Profile {
     private Profile(User user)
     {
         this.id = user.getId();
-        this.username = user.getEmail();
+        this.email = user.getEmail();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.title = user.getTitle();
@@ -67,8 +67,8 @@ public class Profile {
         return id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
     public String getFirstname() {
@@ -95,7 +95,7 @@ public class Profile {
         return disabled;
     }
 
-    public List<Skill> getSkills() {
+    public List<UserSkill> getSkills() {
         return skills;
     }
 
