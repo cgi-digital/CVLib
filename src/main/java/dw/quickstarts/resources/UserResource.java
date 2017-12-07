@@ -121,7 +121,8 @@ public class UserResource {
         if(newUserSkill == null)
         {
             // add skill to db
-            newUserSkill = skillDAO.addSkill(skill, "Other");
+            skillDAO.addSkill(skill, "Other");
+            newUserSkill = skillDAO.findSkillByName(skill);
             skillDAO.addUserSkill(id, newUserSkill.getId(), level);
 
         }
