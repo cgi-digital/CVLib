@@ -106,7 +106,7 @@ public class UserResource {
     @LoginRequired
     @Produces(MediaType.APPLICATION_JSON)
     public Response addSkill(@Session HttpSession session, @Context UriInfo uriInfo,
-                                     @FormParam("skill") String skill, @FormParam("level") int level) throws Exception {
+                                     @FormParam("skillName") String skill, @FormParam("level") int level) throws Exception {
 
         URI logoutLocation = URITools.buildURI(uriInfo, SecurityResource.class, "/logout");
         URI adminConsoleLocation = URITools.buildURI(uriInfo, AdminConsoleResource.class, "");
