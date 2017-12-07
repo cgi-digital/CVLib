@@ -20,8 +20,9 @@ import java.util.List;
 public interface SkillDAO {
 
     @RegisterMapper(UserSkillMapper.class)
-    @SqlQuery("select userskill.*, skills.skill, skills.type from skills, userskill where userskill.userid = :userid")
+    @SqlQuery("select userskill.*, skills.skill, skills.type from skills, userskill where userskill.userid = :userid and skills.id = userskill.skillid")
     List<UserSkill> findUserSkills(@Bind("userid") long userid);
+
 
     @SqlQuery("select * from skills where id = :id")
     Skill findUserSkillById(@Bind("id") long id);
