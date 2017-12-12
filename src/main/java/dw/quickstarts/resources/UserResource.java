@@ -403,7 +403,7 @@ public class UserResource {
         skills.replaceAll(String::toUpperCase);
 
         List<Profile> profiles = new ArrayList<>();
-        for(User other : userDAO.findBySkill(skills))
+        for(User other : userDAO.findBySkill(skills, skills.size()))
         {
             profiles.add(Profile.getListProfile(other));
         }
