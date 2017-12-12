@@ -432,12 +432,6 @@ public class UserResource {
                 List<Qualification> qualifications = qualificationDAO.findUserQualifications(userid);
                 List<Project> projects = projectDAO.findUserProjects(userid);
 
-                return Response.status(Response.Status.OK).entity(Profile.getFullProfile(requestedUser,skills,qualifications,projects)).build();
-            }
-            else
-            {
-                return Response.status(Response.Status.BAD_REQUEST).build();
-            }
 
             return Response.status(Response.Status.OK).entity(Profile.getFullProfile(requestedUser, skills, qualifications, projects)).build();
         } else {
