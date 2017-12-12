@@ -36,10 +36,9 @@ public interface UserDAO {
     @SqlQuery("select * from users where baselocation = :baselocation")
     List<User> findByBaseLocation(@Bind("baselocation") String baselocation);
 
-
-    //SELECT distinct users.* FROM USERS, SKILLS WHERE SKILLS.USERID = USERS.ID AND SKILLS.SKILL IN ('Java', 'C#') group by SKILLS.USERID having count(*) = 2;
-    @SqlQuery("select distinct users.* from users, skills where skills.userid = users.id and UPPER(skills.skill) CONTAINS (<skills>)")
-    List<User> findBySkill(@BindIn("skills") List<String> skills);
+    
+    @SqlQuery("SELECT distinct users.* FROM USERS, SKILLS, USERSKILL WHERE USERSKILL.USERID = USERS.ID AND USERSKILL.SKILLID = SKILLS.ID AND UPPER(SKILLS.SKILL) IN (<skills>) group by USERSKILL.USERID having count(*) = :skillCount")
+    List<User> findBySkill(@BindIn("skills") List<String> skills, @Bind("skillCount") int skillCount);
 
 
     @SqlQuery("select * from users")
