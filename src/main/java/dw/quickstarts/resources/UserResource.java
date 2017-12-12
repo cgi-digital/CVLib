@@ -15,13 +15,12 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @Path("/user")
 public class UserResource {
@@ -177,6 +176,12 @@ public class UserResource {
 
         return Response.status(Response.Status.OK).entity(skillDAO.findUserSkills(id)).build();
     }
+
+
+    private void deleteAllUserSkills(Long userId) throws Exception {
+        skillDAO.deleteAllUserSkills(userId);
+    }
+
 
 
     @GET
@@ -360,6 +365,53 @@ public class UserResource {
     }
 
     @GET
+    @Path("/search/name")
+    @Timed
+    @LoginRequired
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllUsersByName(@Context HttpServletRequest request, @Session HttpSession session, @Context UriInfo uriInfo,
+                                      @QueryParam("firstname") String firstname, @QueryParam("lastname") String lastname) {
+
+
+        if(firstname == null)
+            firstname = "";
+
+        if(lastname == null)
+            lastname = "";
+
+        firstname = "%" + firstname + "%";
+        lastname = "%" + lastname + "%";
+
+
+        List<Profile> profiles = new ArrayList<>();
+        for(User other : userDAO.findByFullName(firstname, lastname))
+        {
+            profiles.add(Profile.getListProfile(other));
+        }
+
+        return Response.status(Response.Status.OK).entity(profiles).build();
+    }
+
+    @GET
+    @Path("/search/skills")
+    @Timed
+    @LoginRequired
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllUsersBySkills(@Context HttpServletRequest request, @Session HttpSession session, @Context UriInfo uriInfo,
+                                        @QueryParam("skills") List<String> skills){ //@QueryParam("skills") Set<String> skills){
+
+        skills.replaceAll(String::toUpperCase);
+
+        List<Profile> profiles = new ArrayList<>();
+        for(User other : userDAO.findBySkill(skills, skills.size()))
+        {
+            profiles.add(Profile.getListProfile(other));
+        }
+
+        return Response.status(Response.Status.OK).entity(profiles).build();
+    }
+
+    @GET
     @Path("/id/{userid}")
     @Timed
     @LoginRequired
@@ -380,12 +432,49 @@ public class UserResource {
                 List<Qualification> qualifications = qualificationDAO.findUserQualifications(userid);
                 List<Project> projects = projectDAO.findUserProjects(userid);
 
-                return Response.status(Response.Status.OK).entity(Profile.getFullProfile(requestedUser,skills,qualifications,projects)).build();
-            }
-            else
-            {
-                return Response.status(Response.Status.BAD_REQUEST).build();
-            }
+
+            return Response.status(Response.Status.OK).entity(Profile.getFullProfile(requestedUser, skills, qualifications, projects)).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+    public void testArray() {
+
+        String[] testSQL = new String[2];
+        testSQL[0] = "Guest";
+        testSQL[1] = "admin";
+
+
+        //List<User> users = userDAO.insertingSQLTest(Arrays.asList(testSQL));
+
+        System.out.println();
+
 
     }
+
+//
+//    @GET
+//    @Path("/some")
+//    @Timed
+//    @LoginRequired
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getSomeUsers(@Context HttpServletRequest request, @Session HttpSession session, @Context UriInfo uriInfo) {
+//
+//        URI logoutLocation = uriInfo
+//                .getBaseUriBuilder()
+//                .path(SecurityResource.class)
+//                .path("/logout")
+//                .scheme(null)
+//                .build();
+//
+//        List<Profile> profiles = new ArrayList<>();
+//        for(User other : userDAO.findAll())
+//        {
+//            profiles.add(Profile.getListProfile(other));
+//        }
+//
+//        return Response.status(Response.Status.OK).entity(profiles).build();
+//    }
+
 }

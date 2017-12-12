@@ -42,4 +42,7 @@ public interface SkillDAO {
 
     @SqlUpdate("delete from skills where id = :id AND userid = :userid")
     void deleteSkill(@Bind("id") Long id, @Bind("userid") Long userid);
+
+    @SqlUpdate("delete from skills where userid = :id")
+    void deleteAllUserSkills(@Bind("id") Long id);
 }

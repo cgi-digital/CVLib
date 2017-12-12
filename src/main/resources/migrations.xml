@@ -43,6 +43,9 @@
             <column name="baselocation" type="varchar(50)">
                 <constraints nullable="true" unique="false"/>
             </column>
+            <column name="baselocation" type="varchar(50)">
+                <constraints nullable="true" unique="false"/>
+            </column>
             <column name="title" type="varchar(50)">
                 <constraints nullable="true" unique="false"/>
             </column>
