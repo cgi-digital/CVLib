@@ -425,19 +425,13 @@ public class UserResource {
                 .scheme(null)
                 .build();
 
-<<<<<<< HEAD
             User requestedUser = userDAO.findById(userid);
             if(requestedUser != null)
             {
                 List<UserSkillView> skills = skillDAO.findUserSkills(userid);
                 List<Qualification> qualifications = qualificationDAO.findUserQualifications(userid);
                 List<Project> projects = projectDAO.findUserProjects(userid);
-=======
-        User requestedUser = userDAO.findById(userid);
-        if (requestedUser != null) {
-            List<Skill> skills = skillDAO.findUserSkills(userid);
-            List<Qualification> qualifications = qualificationDAO.findUserQualifications(userid);
-            List<Project> projects = projectDAO.findUserProjects(userid);
+
 
             return Response.status(Response.Status.OK).entity(Profile.getFullProfile(requestedUser, skills, qualifications, projects)).build();
         } else {
@@ -455,32 +449,10 @@ public class UserResource {
         //List<User> users = userDAO.insertingSQLTest(Arrays.asList(testSQL));
 
         System.out.println();
->>>>>>> 2941a31d24313b30567060cb925983a92643271b
-
-
-            return Response.status(Response.Status.OK).entity(Profile.getFullProfile(requestedUser, skills, qualifications, projects)).build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-    }
-
-<<<<<<< HEAD
-    public void testArray() {
-
-        String[] testSQL = new String[2];
-        testSQL[0] = "Guest";
-        testSQL[1] = "admin";
-
-
-        //List<User> users = userDAO.insertingSQLTest(Arrays.asList(testSQL));
-
-        System.out.println();
 
 
     }
 
-=======
->>>>>>> 2941a31d24313b30567060cb925983a92643271b
 //
 //    @GET
 //    @Path("/some")

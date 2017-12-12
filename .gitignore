@@ -4,3 +4,6 @@ dependency-reduced-pom.xml
 
 .idea/
 *.iml
+.settings/org.eclipse.jdt.core.prefs
+.classpath
+.project
