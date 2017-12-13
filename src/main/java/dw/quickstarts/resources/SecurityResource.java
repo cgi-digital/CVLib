@@ -126,7 +126,6 @@ public class SecurityResource {
     public Response register(@Session HttpSession session,
                              @Context HttpServletRequest req,
                              @Context UriInfo uriInfo,
-                             @FormParam("Username") String username,
                              @FormParam("FirstName") String firstName,
                              @FormParam("LastName") String lastName,
                              @FormParam("EmailAddress") String emailAddress,
@@ -136,7 +135,7 @@ public class SecurityResource {
         //TODO escape user input
 
         if (password.equals(reTypePassword)) {
-            if(userDAO.findByUsername(username) == null){
+            if(userDAO.findByEmail(emailAddress) == null){
 
                 String salt = RandomStringUtils.randomAlphanumeric(12);
                 String saltedPassword = String.format("%s%s", salt, password);
@@ -151,11 +150,11 @@ public class SecurityResource {
                 byte[] hash = digest.digest(saltedPassword.getBytes(StandardCharsets.UTF_8));
                 String hexHash = Hex.encodeHexString(hash);
 
-                userDAO.registerUser(username, firstName, lastName, emailAddress, salt, hexHash,false);
+                userDAO.registerUser(firstName, lastName, emailAddress, salt, hexHash,false);
 
                 LOGGER.info(messages.get("REGISTRATION"));
 
-                return handleLogin(session,req,uriInfo,username,password);
+                return handleLogin(session,req,uriInfo,emailAddress,password);
             }
             else{
                 //username exists

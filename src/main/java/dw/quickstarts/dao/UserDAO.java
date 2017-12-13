@@ -44,8 +44,8 @@ public interface UserDAO {
     @SqlQuery("select * from users")
     List<User> findAll();
 
-    @SqlUpdate("insert into users (username,firstName,lastName,emailAddress,salt,password,admin,disabled) values (:username, :firstName, :lastName, :emailAddress, :salt,:password,:admin, false)")
-    void registerUser(@Bind("username") String username,
+    @SqlUpdate("insert into users (firstName,lastName,email,salt,password,admin,disabled) values (:firstName, :lastName, :emailAddress, :salt,:password,:admin, false)")
+    void registerUser(
                       @Bind("firstName") String firstName, 
                       @Bind("lastName") String lastName,
                       @Bind("emailAddress") String emailAddress,
