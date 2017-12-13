@@ -40,6 +40,9 @@ public interface SkillDAO {
     @SqlUpdate("update skills set skill = :skill, level = :level where id = :id AND userid = :userid")
     void updateSkill(@Bind("id") Long id, @Bind("userid") Long userid, @Bind("skill") String skill, @Bind("level") int level);
 
+    @SqlUpdate("update userskill set level = :level WHERE userid = :userid AND skillid = :skillid")
+    void updateUserSkill(@Bind("userid") Long userid, @Bind("skillid") Long skillid, @Bind("level") int level);
+
     @SqlUpdate("delete from skills where id = :id AND userid = :userid")
     void deleteSkill(@Bind("id") Long id, @Bind("userid") Long userid);
 

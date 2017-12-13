@@ -127,8 +127,12 @@ public class UserResource {
         }
         else {
 
-            if(skillDAO.findUserSkillById(userid, newUserSkill.getId()) == null)
+            UserSkill userSkill = skillDAO.findUserSkillById(userid, newUserSkill.getId());
+
+            if(userSkill == null)
                 skillDAO.addUserSkill(userid, newUserSkill.getId(), level);
+            else
+                skillDAO.updateUserSkill(userSkill.getUserid(), userSkill.getSkillid(), level);
 
         }
 
