@@ -429,12 +429,12 @@ public class UserResource {
                 .scheme(null)
                 .build();
 
-            User requestedUser = userDAO.findById(userid);
-            if(requestedUser != null)
-            {
-                List<UserSkillView> skills = skillDAO.findUserSkills(userid);
-                List<Qualification> qualifications = qualificationDAO.findUserQualifications(userid);
-                List<Project> projects = projectDAO.findUserProjects(userid);
+        User requestedUser = userDAO.findById(userid);
+        if(requestedUser != null)
+        {
+            List<UserSkillView> skills = skillDAO.findUserSkills(userid);
+            List<Qualification> qualifications = qualificationDAO.findUserQualifications(userid);
+            List<Project> projects = projectDAO.findUserProjects(userid);
 
 
             return Response.status(Response.Status.OK).entity(Profile.getFullProfile(requestedUser, skills, qualifications, projects)).build();
