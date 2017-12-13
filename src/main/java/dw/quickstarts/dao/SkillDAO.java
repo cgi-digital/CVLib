@@ -28,6 +28,9 @@ public interface SkillDAO {
     @SqlQuery("select * from userskill where userid = :userid and skillid = :skillid")
     UserSkill findUserSkillById(@Bind("userid") long userid, @Bind("skillid") long skillid);
 
+    @SqlQuery("select * from skills")
+    List<Skill> findAllSkills();
+
     @SqlQuery("select * from skills where UPPER(skill) = UPPER(:name)")
     Skill findSkillByName(@Bind("name") String name);
 

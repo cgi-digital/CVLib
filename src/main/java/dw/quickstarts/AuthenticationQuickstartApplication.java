@@ -3,6 +3,7 @@ package dw.quickstarts;
 import dw.quickstarts.dao.*;
 import dw.quickstarts.dao.factory.*;
 import dw.quickstarts.resources.AdminConsoleResource;
+import dw.quickstarts.resources.SkillResource;
 import dw.quickstarts.tasks.GetHashedPasswordCommand;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
@@ -100,6 +101,7 @@ public class AuthenticationQuickstartApplication extends Application<Authenticat
         environment.jersey().register(new UserResource(userDAO,skillDAO,qualificationDAO,projectDAO, phoneNumDAO));
         environment.jersey().register(new SecurityResource(userDAO));
         environment.jersey().register(new AdminConsoleResource(userDAO,qualificationDAO,projectDAO));
+        environment.jersey().register(new SkillResource(skillDAO));
 
         environment.jersey().setUrlPattern("/api/*");
 
