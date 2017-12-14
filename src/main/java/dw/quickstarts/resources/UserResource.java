@@ -430,7 +430,6 @@ public class UserResource {
                 .scheme(null)
                 .build();
 
-<<<<<<< HEAD
             User requestedUser = userDAO.findById(userid);
             if(requestedUser != null)
             {
@@ -438,14 +437,6 @@ public class UserResource {
                 List<Qualification> qualifications = qualificationDAO.findUserQualifications(userid);
                 List<Project> projects = projectDAO.findUserProjects(userid);
                 List<PhoneNumber> phoneNumbers = phoneNumDAO.findPhoneNumbersByUserID(userid);
-=======
-        User requestedUser = userDAO.findById(userid);
-        if(requestedUser != null)
-        {
-            List<UserSkillView> skills = skillDAO.findUserSkills(userid);
-            List<Qualification> qualifications = qualificationDAO.findUserQualifications(userid);
-            List<Project> projects = projectDAO.findUserProjects(userid);
->>>>>>> 4d7d4b7c19f4dd1b5cf9092d1a110f0ebbcd8ba0
 
 
             return Response.status(Response.Status.OK).entity(Profile.getFullProfile(requestedUser, skills, qualifications, projects, phoneNumbers)).build();
