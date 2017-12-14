@@ -3,10 +3,7 @@ package dw.quickstarts.resources;
 import com.codahale.metrics.annotation.Timed;
 import dw.quickstarts.*;
 import dw.quickstarts.annotations.LoginRequired;
-import dw.quickstarts.dao.ProjectDAO;
-import dw.quickstarts.dao.QualificationDAO;
-import dw.quickstarts.dao.SkillDAO;
-import dw.quickstarts.dao.UserDAO;
+import dw.quickstarts.dao.*;
 import dw.quickstarts.utilities.URITools;
 import io.dropwizard.jersey.sessions.Session;
 import org.slf4j.Logger;
@@ -29,12 +26,14 @@ public class UserResource {
     private final SkillDAO skillDAO;
     private final QualificationDAO qualificationDAO;
     private final ProjectDAO projectDAO;
+    private final PhoneNumDAO phoneNumDAO;
 
-    public UserResource(UserDAO userDAO, SkillDAO skillDAO, QualificationDAO qualificationDAO, ProjectDAO projectDAO) {
+    public UserResource(UserDAO userDAO, SkillDAO skillDAO, QualificationDAO qualificationDAO, ProjectDAO projectDAO, PhoneNumDAO phoneNumDAO) {
         this.userDAO = userDAO;
         this.skillDAO = skillDAO;
         this.qualificationDAO = qualificationDAO;
         this.projectDAO = projectDAO;
+        this.phoneNumDAO = phoneNumDAO;
     }
 
     @GET
@@ -52,8 +51,10 @@ public class UserResource {
         List<UserSkillView> skills = skillDAO.findUserSkills(id);
         List<Qualification> qualifications = qualificationDAO.findUserQualifications(id);
         List<Project> projects = projectDAO.findUserProjects(id);
+        List<PhoneNumber> phoneNumbers = phoneNumDAO.findPhoneNumbersByUserID(id);
 
-        return Profile.getFullProfile(user,skills,qualifications,projects);
+
+        return Profile.getFullProfile(user,skills,qualifications,projects, phoneNumbers);
     }
 
     @POST
@@ -431,9 +432,10 @@ public class UserResource {
                 List<UserSkillView> skills = skillDAO.findUserSkills(userid);
                 List<Qualification> qualifications = qualificationDAO.findUserQualifications(userid);
                 List<Project> projects = projectDAO.findUserProjects(userid);
+                List<PhoneNumber> phoneNumbers = phoneNumDAO.findPhoneNumbersByUserID(userid);
 
 
-            return Response.status(Response.Status.OK).entity(Profile.getFullProfile(requestedUser, skills, qualifications, projects)).build();
+            return Response.status(Response.Status.OK).entity(Profile.getFullProfile(requestedUser, skills, qualifications, projects, phoneNumbers)).build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

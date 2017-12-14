@@ -9,6 +9,7 @@ public class Profile {
 
     private long id;
     private String email;
+    private String baseLocation;
     private String firstName;
     private String lastName;
     private String title;
@@ -18,6 +19,7 @@ public class Profile {
     private List<UserSkillView> skills;
     private List<Qualification> qualifications;
     private List<Project> projects;
+    private List<PhoneNumber> phoneNumbers;
 
     private Profile(){}
 
@@ -31,15 +33,17 @@ public class Profile {
         profile.title = user.getTitle();
         profile.admin = user.isAdmin();
         profile.disabled = user.isDisabled();
+        profile.baseLocation = user.getBaselocation();
 
         return profile;
     }
 
-    public static Profile getFullProfile(User user, List<UserSkillView> skills, List<Qualification> qualifications, List<Project> projects)
+    public static Profile getFullProfile(User user, List<UserSkillView> skills, List<Qualification> qualifications, List<Project> projects, List<PhoneNumber> phoneNumbers)
     {
         Profile profile = new Profile();
         profile.id = user.getId();
         profile.email = user.getEmail();
+        profile.baseLocation = user.getBaselocation();
         profile.firstName = user.getFirstName();
         profile.lastName = user.getLastName();
         profile.title = user.getTitle();
@@ -49,6 +53,7 @@ public class Profile {
         profile.skills = skills;
         profile.qualifications = qualifications;
         profile.projects = projects;
+        profile.phoneNumbers = phoneNumbers;
 
         return profile;
     }
@@ -107,4 +112,7 @@ public class Profile {
         return projects;
     }
 
+    public List<PhoneNumber> getPhoneNumbers() {
+        return phoneNumbers;
+    }
 }

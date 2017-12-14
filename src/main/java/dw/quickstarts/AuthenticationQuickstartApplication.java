@@ -1,12 +1,7 @@
 package dw.quickstarts;
 
-import dw.quickstarts.dao.ProjectDAO;
-import dw.quickstarts.dao.QualificationDAO;
-import dw.quickstarts.dao.SkillDAO;
-import dw.quickstarts.dao.UserDAO;
-import dw.quickstarts.dao.factory.ProjectDAOFactory;
-import dw.quickstarts.dao.factory.QualificationDAOFactory;
-import dw.quickstarts.dao.factory.SkillDAOFactory;
+import dw.quickstarts.dao.*;
+import dw.quickstarts.dao.factory.*;
 import dw.quickstarts.resources.AdminConsoleResource;
 import dw.quickstarts.tasks.GetHashedPasswordCommand;
 import io.dropwizard.Application;
@@ -23,7 +18,6 @@ import org.glassfish.jersey.process.internal.RequestScoped;
 import org.skife.jdbi.v2.DBI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import dw.quickstarts.dao.factory.UserDAOFactory;
 import dw.quickstarts.filters.LoginRequiredFeature;
 import dw.quickstarts.mappers.ForbiddenExceptionMapper;
 import dw.quickstarts.resources.UserResource;
@@ -74,6 +68,9 @@ public class AuthenticationQuickstartApplication extends Application<Authenticat
         final ProjectDAO projectDAO = jdbi.onDemand(ProjectDAO.class);
         final ProjectDAOFactory projectDAOFactory = new ProjectDAOFactory(projectDAO);
 
+        final PhoneNumDAO phoneNumDAO = jdbi.onDemand(PhoneNumDAO.class);
+        final PhoneNumDAOFactory phoneNumDAOFactory = new PhoneNumDAOFactory(phoneNumDAO);
+
         environment.jersey().register(new AbstractBinder() {
             @Override
             protected void configure() {
@@ -84,6 +81,8 @@ public class AuthenticationQuickstartApplication extends Application<Authenticat
                 bindFactory(qualificationDAOFactory).to(QualificationDAO.class)
                         .proxy(true).proxyForSameScope(false).in(RequestScoped.class);
                 bindFactory(projectDAOFactory).to(ProjectDAO.class)
+                        .proxy(true).proxyForSameScope(false).in(RequestScoped.class);
+                bindFactory(phoneNumDAOFactory).to(PhoneNumDAO.class)
                         .proxy(true).proxyForSameScope(false).in(RequestScoped.class);
             }
         });
@@ -98,7 +97,7 @@ public class AuthenticationQuickstartApplication extends Application<Authenticat
         environment.jersey().register(ForbiddenExceptionMapper.class);
 
         // Resources
-        environment.jersey().register(new UserResource(userDAO,skillDAO,qualificationDAO,projectDAO));
+        environment.jersey().register(new UserResource(userDAO,skillDAO,qualificationDAO,projectDAO, phoneNumDAO));
         environment.jersey().register(new SecurityResource(userDAO));
         environment.jersey().register(new AdminConsoleResource(userDAO,qualificationDAO,projectDAO));
 

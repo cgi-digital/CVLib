@@ -1,5 +1,6 @@
 package dw.quickstarts.dao;
 
+import dw.quickstarts.PhoneNumber;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
@@ -75,6 +76,7 @@ public interface UserDAO {
 
     @SqlUpdate("delete from skills where userid = :id")
     void deleteUserSkills(@Bind("id") Long id);
+
 
     /*
 
